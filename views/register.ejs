@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+</head>
+<body>
+  <h2>Register</h2>
+  <form action="/register" method="POST">
+    <input name="username" placeholder="Username" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <input name="name" placeholder="Full Name" required />
+    <input name="dob" type="date" placeholder="Date of Birth" required />
+    <input name="gender" placeholder="Gender" required />
+    <input name="address" placeholder="Address" required />
+    <input name="issuedate" type="date" placeholder="Issue Date" required />
+    <input name="chipSerialNumber" placeholder="Chip Serial Number" required />
+    <button type="submit">Register</button>
+  </form>
+  <p>Already have an account? <a href="/login">Login</a></p>
+</body>
+</html>

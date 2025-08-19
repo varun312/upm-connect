@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - UPM</title>
+    <link rel="stylesheet" href="css/globals.css" />
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="logo">
+            <img src="assets/logo.svg" alt="UPM Logo" />
+            <span>UPM</span>
+          </div>
+        </div>
+        <nav class="nav" id="nav">
+          <a href="#" class="nav-link active">Home</a>
+          <a href="#" class="nav-link">About</a>
+          <a href="#" class="nav-link">Features</a>
+          <a href="#" class="nav-link">Contact</a>
+        </nav>
+        <div class="header-right">
+          <img src="assets/header-end-icon.svg" alt="Header Icon" />
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Form Container -->
+        <div class="form-container">
+          <h1 class="form-title">Login</h1>
+
+          <form class="login-form" action="/login" method="POST">
+            <!-- First Name -->
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input
+                type="text"
+                id="first-name"
+                name="first-name"
+                class="form-input"
+                placeholder="Enter your first name"
+              />
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input
+                type="text"
+                id="last-name"
+                name="last-name"
+                class="form-input"
+                placeholder="Enter your last name"
+              />
+            </div>
+
+            <!-- Username (PingID) -->
+            <div class="form-group">
+              <label for="username">PingID</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-input"
+                placeholder="Enter your PingID"
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+              <button type="button" class="btn-secondary">REFRESH</button>
+              <button type="submit" class="btn-primary">SUBMIT</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

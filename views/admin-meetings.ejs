@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Meeting</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7e8d9; margin: 0; padding: 0; }
+        .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h1 { text-align: center; }
+        form { display: flex; flex-direction: column; gap: 18px; }
+        label { font-weight: bold; }
+        input, textarea { padding: 10px; border-radius: 4px; border: 1px solid #bbb; font-size: 1rem; }
+        button { padding: 12px; background: #826E5A; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        button:hover { background: #6d594a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Meeting</h1>
+        <form action="/admin/meetings" method="POST">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+            <label for="agenda">Agenda</label>
+            <textarea id="agenda" name="agenda" rows="4" required></textarea>
+            <button type="submit">Create Meeting</button>
+        </form>
+    </div>
+</body>
+</html>

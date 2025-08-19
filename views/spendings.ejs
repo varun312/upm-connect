@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spending Ledger - UPM</title>
+    <link rel="stylesheet" href="css/globals.css" />
+    <link rel="stylesheet" href="css/spending.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+     <header class="header">
+        <div class="header-left">
+          <div class="logo">
+            <img src="assets/logo.svg" alt="UPM Logo" />
+            <span>UPM</span>
+          </div>
+        </div>
+        <nav class="nav" id="nav">
+          <a href="#" class="nav-link active">Home</a>
+          <a href="#" class="nav-link">About</a>
+          <a href="#" class="nav-link">Features</a>
+          <a href="#" class="nav-link">Contact</a>
+        </nav>
+        <div class="header-right">
+          <img src="assets/header-end-icon.svg" alt="Header Icon" />
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">Spending Ledger 
+
+            <span>History</span>
+          </h1>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section">
+          <h2 class="table-title">
+            OPEN SPENDING LEDGER -- RECENT TRANSACTIONS
+          </h2>
+
+          <div class="table-container">
+            <table class="spending-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Department</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (spendings && spendings.length > 0) { %>
+                  <% spendings.forEach(function(spending) { %>
+                    <tr>
+                      <td><%= spending.date ? spending.date.toISOString().slice(0,10) : '' %></td>
+                      <td><%= spending.department %></td>
+                      <td><%= spending.description %></td>
+                      <td>$<%= spending.amount ? spending.amount.toLocaleString() : '' %></td>
+                      <td><span class="status <%= spending.status ? spending.status.toLowerCase() : '' %>"><%= spending.status %></span></td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="5" style="text-align:center; color:#888;">No transactions found.</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Refresh Button -->
+          <div class="button-container">
+            <button class="refresh-btn">REFRESH</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
