@@ -9,22 +9,7 @@
   </head>
   <body>
     <div class="container">
-      <header class="header">
-        <div class="header-left">
-          <div class="logo">
-            <img src="assets/logo.svg" alt="UPM Logo" />
-            <span>UPM</span>
-          </div>
-        </div>
-        <nav class="nav" id="nav">
-          <a href="/admin" class="nav-link">User Approvals</a>
-          <a href="/admin/applications" class="nav-link active">Applications</a>
-          <a href="/admin/documents" class="nav-link">Documents</a>
-        </nav>
-        <div class="header-right">
-          <img src="assets/header-end-icon.svg" alt="Header Icon" />
-        </div>
-      </header>
+      <%- include('partials/header') %>
       <main class="main-content">
         <div class="page-header">
           <h1 class="page-title">Application <span>Requests</span></h1>

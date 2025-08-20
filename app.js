@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth');
 const auth = require('./middleware/auth');
+const getUser = require('./middleware/getUser');
 const path = require('path');
 const User = require('./models/User'); // Add this at the top with other requires
 
@@ -17,6 +18,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(getUser);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI);
@@ -36,11 +38,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Home' });
+app.get('/', async (req, res) => {
+  let user = null;
+  if (req.user && req.user.userId) {
+    user = await User.findById(req.user.userId);
+  }
+  res.render('index', { title: 'Home', user: user || null });
 });
-app.get('/login', (req, res) => res.render('login'));
-app.get('/register', (req, res) => res.render('register'));
+app.get('/login', (req, res) => res.render('login', { user: req.user || null }));
+app.get('/register', (req, res) => res.render('register', { user: req.user || null }));
 app.get('/dashboard', auth, async (req, res) => {
   try {
     const userId = req.user && req.user.userId ? req.user.userId : null;
@@ -55,6 +61,7 @@ app.get('/dashboard', auth, async (req, res) => {
       return res.redirect('/login');
     }
     res.render('dashboard', {
+      user: user,
       username: user.username || 'User',
       vaultDocs: user.vaultDocs || [],
       applications: user.applications || []
@@ -66,7 +73,7 @@ app.get('/dashboard', auth, async (req, res) => {
 
 app.get('/approval', auth, (req, res) => {
   const approvalLevel = req.user && typeof req.user.approvalLevel === 'number' ? req.user.approvalLevel : 0;
-  res.render('approval', { approvalLevel });
+  res.render('approval', { approvalLevel, user: req.user || null });
 });
 
 

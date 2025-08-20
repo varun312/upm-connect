@@ -22,6 +22,7 @@
     </style>
 </head>
 <body>
+    <%- include('partials/header') %>
     <h1>Approval In Process</h1>
     <div class="progress-container">
     <div class="progress-bar" style="width: <%= Math.round((approvalLevel/3)*100) %>%"><%= approvalLevel %> / 3</div>

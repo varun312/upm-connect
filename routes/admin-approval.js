@@ -12,9 +12,10 @@ function adminOnly(req, res, next) {
 }
 
 // GET /admin - show users pending approval
-router.get('/admin', async (req, res) => {
+router.get('/admin', auth, adminOnly, async (req, res) => {
   const users = await User.find({ approvalLevel: 0 });
-  res.render('admin', { users });
+  const user = await User.findById(req.user.userId);
+  res.render('admin', { users, user: user || null });
 });
 
 // POST /admin/approve/:id - approve a user

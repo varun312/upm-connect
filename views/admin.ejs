@@ -3,87 +3,228 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Approval Requests - UPM</title>
+    <title>Admin Dashboard - UPM</title>
     <link rel="stylesheet" href="css/globals.css" />
-    <link rel="stylesheet" href="css/spending.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <style>
+      body {
+        background: #e0e0e0;
+        font-family: 'Tahoma', 'Verdana', Arial, sans-serif;
+        color: #222;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        background: #fff;
+        border: 2px solid #b0b0b0;
+        box-shadow: 0 0 12px #bbb;
+        display: flex;
+        min-height: 90vh;
+      }
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, #d6eaff 0%, #b3c6e7 100%);
+        border-right: 2px solid #b0b0b0;
+        padding: 2rem 1rem 1rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .sidebar .sidebar-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #1a237e;
+        margin-bottom: 2rem;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 0 #fff;
+      }
+      .sidebar .dashboard-link {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        background: #e3eaff;
+        border: 1px solid #a0b0d0;
+        border-radius: 4px;
+        color: #1a237e;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 1rem;
+        box-shadow: 1px 1px 0 #fff;
+        transition: background 0.2s;
+      }
+      .sidebar .dashboard-link:hover {
+        background: #c3d6f7;
+        color: #0d133d;
+      }
+      .main-content {
+        flex: 1;
+        padding: 2rem 2.5rem;
+        background: #f8faff;
+        min-height: 100%;
+      }
+      .page-header {
+        margin-bottom: 2rem;
+      }
+      .page-title {
+        font-size: 2.2rem;
+        color: #1a237e;
+        font-family: 'Tahoma', 'Verdana', Arial, sans-serif;
+        text-shadow: 2px 2px 0 #fff;
+        letter-spacing: 1px;
+      }
+      .page-title span {
+        color: #1976d2;
+        font-weight: bold;
+      }
+      .table-section {
+        margin-top: 2rem;
+        background: #e3eaff;
+        border: 1px solid #b0b0b0;
+        border-radius: 6px;
+        box-shadow: 1px 1px 0 #fff;
+        padding: 1.5rem;
+      }
+      .table-title {
+        font-size: 1.3rem;
+        color: #1a237e;
+        margin-bottom: 1rem;
+        font-family: 'Tahoma', 'Verdana', Arial, sans-serif;
+        text-shadow: 1px 1px 0 #fff;
+      }
+      .table-container {
+        overflow-x: auto;
+      }
+      .spending-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 1rem;
+      }
+      .spending-table th, .spending-table td {
+        border: 1px solid #b0b0b0;
+        padding: 0.5rem 0.75rem;
+        text-align: center;
+      }
+      .spending-table th {
+        background: #d6eaff;
+        color: #1a237e;
+        font-weight: bold;
+        font-size: 1rem;
+        text-shadow: 1px 1px 0 #fff;
+      }
+      .spending-table tr:nth-child(even) {
+        background: #f0f6ff;
+      }
+      .approve-btn {
+        background: #1976d2;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 0.4rem 1rem;
+        font-size: 1rem;
+        font-family: inherit;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 1px 1px 0 #fff;
+        transition: background 0.2s;
+      }
+      .approve-btn:disabled, .approve-btn[disabled] {
+        background: #b0b0b0;
+        color: #fff;
+        cursor: not-allowed;
+      }
+      @media (max-width: 900px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          padding: 1rem 0.5rem;
+        }
+        .main-content {
+          padding: 1rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <!-- Header -->
-      <header class="header">
-        <div class="header-left">
-          <div class="logo">
-            <img src="assets/logo.svg" alt="UPM Logo" />
-            <span>UPM</span>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-title">Admin Panel</div>
+        <a href="/admin/applications" class="dashboard-link">Manage Applications</a>
+        <a href="/admin/documents" class="dashboard-link">Manage Documents</a>
+        <a href="/admin/meetings" class="dashboard-link">Manage Meetings</a>
+        <a href="/admin/spendings" class="dashboard-link">Manage Spendings</a>
+      </aside>
+
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <!-- Header -->
+        <%- include('partials/header') %>
+
+        <!-- Main Content -->
+        <main class="main-content">
+          <!-- Page Header -->
+          <div class="page-header">
+            <h1 class="page-title">Admin <span>Dashboard</span></h1>
           </div>
-        </div>
-        <nav class="nav" id="nav">
-          <a href="#" class="nav-link active">Home</a>
-          <a href="#" class="nav-link">About</a>
-          <a href="#" class="nav-link">Features</a>
-          <a href="#" class="nav-link">Contact</a>
-        </nav>
-        <div class="header-right">
-          <img src="assets/header-end-icon.svg" alt="Header Icon" />
-        </div>
-      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <!-- Page Header -->
-        <div class="page-header">
-          <h1 class="page-title">User Approval <span>Requests</span></h1>
-        </div>
-
-        <!-- Table Section -->
-        <div class="table-section">
-          <h2 class="table-title">
-            USERS PENDING APPROVAL
-          </h2>
-          <div class="table-container">
-            <table class="spending-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>DOB</th>
-                  <th>Gender</th>
-                  <th>Address</th>
-                  <th>Issue Date</th>
-                  <th>Proof of Residence</th>
-                  <th>Proof of Identity</th>
-                  <th>Approve</th>
-                  <th>PING ID</th>
-                  <th>Password</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% if (users && users.length > 0) { %>
-                  <% users.forEach(function(user) { %>
-                    <tr id="user-row-<%= user._id %>">
-                      <td><%= user.firstName %> <%= user.lastName %></td>
-                      <td><%= user.dob.toISOString().slice(0,10) %></td>
-                      <td><%= user.gender %></td>
-                      <td><%= user.adres %></td>
-                      <td><%= user.issuedate.toISOString().slice(0,10) %></td>
-                      <td><a href="/uploads/<%= user.proofResidence.file %>" target="_blank">View</a></td>
-                      <td><a href="/uploads/<%= user.proofIdentity.file %>" target="_blank">View</a></td>
-                      <td>
-                        <button id="approve-btn-<%= user._id %>" onclick="approveUser('<%= user._id %>')" class="approve-btn">Approve</button>
-                      </td>
-                      <td id="ping-<%= user._id %>"></td>
-                      <td id="pass-<%= user._id %>"></td>
-                    </tr>
-                  <% }) %>
-                <% } else { %>
+          <!-- Table Section -->
+          <div class="table-section">
+            <h2 class="table-title">
+              USERS PENDING APPROVAL
+            </h2>
+            <div class="table-container">
+              <table class="spending-table">
+                <thead>
                   <tr>
-                    <td colspan="10" style="text-align:center; color:#888;">No users pending approval.</td>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Issue Date</th>
+                    <th>Proof of Residence</th>
+                    <th>Proof of Identity</th>
+                    <th>Approve</th>
+                    <th>PING ID</th>
+                    <th>Password</th>
                   </tr>
-                <% } %>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <% if (users && users.length > 0) { %>
+                    <% users.forEach(function(user) { %>
+                      <tr id="user-row-<%= user._id %>">
+                        <td><%= user.firstName %> <%= user.lastName %></td>
+                        <td><%= user.dob.toISOString().slice(0,10) %></td>
+                        <td><%= user.gender %></td>
+                        <td><%= user.adres %></td>
+                        <td><%= user.issuedate.toISOString().slice(0,10) %></td>
+                        <td><a href="/uploads/<%= user.proofResidence.file %>" target="_blank">View</a></td>
+                        <td><a href="/uploads/<%= user.proofIdentity.file %>" target="_blank">View</a></td>
+                        <td>
+                          <button id="approve-btn-<%= user._id %>" onclick="approveUser('<%= user._id %>')" class="approve-btn">Approve</button>
+                        </td>
+                        <td id="ping-<%= user._id %>"></td>
+                        <td id="pass-<%= user._id %>"></td>
+                      </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="10" style="text-align:center; color:#888;">No users pending approval.</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
     <script>
     function approveUser(userId) {

@@ -6,8 +6,9 @@ const auth = require('../middleware/auth');
 const bcrypt = require('bcryptjs');
 
 // GET /application-form - render form
-router.get('/application-form', auth, (req, res) => {
-  res.render('application-form');
+router.get('/application-form', auth, async (req, res) => {
+  const user = await User.findById(req.user.userId);
+  res.render('application-form', { user: user || null });
 });
 
 // POST /application-form - save form data

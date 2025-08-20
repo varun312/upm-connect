@@ -5,6 +5,7 @@ const Document = require('../models/Document');
 const fs = require('fs');
 const path = require('path');
 const auth = require('../middleware/auth');
+const User = require('../models/User'); // Import User model
 
 // POST /vault/upload
 router.post('/vault/upload', auth, upload.single('file'), async (req, res) => {
@@ -14,7 +15,6 @@ router.post('/vault/upload', auth, upload.single('file'), async (req, res) => {
     if (!userId) return res.status(401).json({ error: 'Invalid or missing JWT' });
 
     // Get user from DB to fetch pingId
-    const User = require('../models/User');
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: 'User not found' });
 
@@ -62,7 +62,8 @@ router.get('/vault/download/:docId', async (req, res) => {
 router.get('/vault', auth, async (req, res) => {
   try {
     const docs = await Document.find().sort({ createdAt: -1 });
-    res.render('vault', { docs });
+    const user = await User.findById(req.user.userId); // Fetch full user object
+    res.render('vault', { docs, user: user || null });
   } catch (err) {
     res.status(500).send('Error loading vault');
   }

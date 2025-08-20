@@ -4,6 +4,8 @@ const Meeting = require('../models/Meeting');
 const auth = require('../middleware/auth');
 const Application = require('../models/Application');
 const Document = require('../models/Document');
+const Spending = require('../models/Spending');
+const User = require('../models/User');
 
 // Middleware to check admin (approvalLevel 4)
 function adminOnly(req, res, next) {
@@ -51,8 +53,9 @@ router.post('/admin/documents/:id/reject', auth, adminOnly, async (req, res) => 
 });
 
 // GET /admin/meetings - show meeting creation form
-router.get('/admin/meetings', auth, adminOnly, (req, res) => {
-  res.render('admin-meetings');
+router.get('/admin/meetings', auth, adminOnly, async (req, res) => {
+  const user = await User.findById(req.user.userId);
+  res.render('admin-meetings', { user: user || null });
 });
 
 // POST /admin/meetings - create a new meeting
@@ -66,10 +69,10 @@ router.post('/admin/meetings', auth, adminOnly, async (req, res) => {
   }
 });
 
-const Spending = require('../models/Spending');
 // GET /admin/spendings - show spending creation form
-router.get('/admin/spendings', auth, adminOnly, (req, res) => {
-  res.render('admin-spendings');
+router.get('/admin/spendings', auth, adminOnly, async (req, res) => {
+  const user = await User.findById(req.user.userId);
+  res.render('admin-spendings', { user: user || null });
 });
 
 // POST /admin/spendings - create a new spending
@@ -83,10 +86,7 @@ router.post('/admin/spendings', auth, adminOnly, async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // GET /admin/applications - show applications table
-const User = require('../models/User');
 router.get('/admin/applications', auth, adminOnly, async (req, res) => {
   try {
     const applications = await Application.find().sort({ _id: -1 });
@@ -95,7 +95,8 @@ router.get('/admin/applications', auth, adminOnly, async (req, res) => {
     // Fetch all users with those pingIds, populate vaultDocs
     const users = await User.find({ pingId: { $in: pingIds } })
       .populate('vaultDocs');
-    res.render('admin-applications', { applications, users });
+    const user = await User.findById(req.user.userId);
+    res.render('admin-applications', { applications, users, user: user || null });
   } catch (err) {
     res.status(500).send('Error loading applications');
   }
@@ -105,8 +106,11 @@ router.get('/admin/applications', auth, adminOnly, async (req, res) => {
 router.get('/admin/documents', auth, adminOnly, async (req, res) => {
   try {
     const documents = await Document.find().sort({ createdAt: -1 });
-    res.render('admin-documents', { documents });
+    const user = await User.findById(req.user.userId);
+    res.render('admin-documents', { documents, user: user || null });
   } catch (err) {
     res.status(500).send('Error loading documents');
   }
 });
+
+module.exports = router;
