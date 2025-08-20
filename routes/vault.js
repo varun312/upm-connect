@@ -4,19 +4,40 @@ const upload = require('../middleware/upload');
 const Document = require('../models/Document');
 const fs = require('fs');
 const path = require('path');
+const auth = require('../middleware/auth');
 
 // POST /vault/upload
-router.post('/vault/upload', upload.single('file'), async (req, res) => {
+router.post('/vault/upload', auth, upload.single('file'), async (req, res) => {
   try {
-    const { pingId, docType, source } = req.body;
+    // Extract user id from JWT (assuming auth middleware sets req.user)
+    const userId = req.user && req.user.userId ? req.user.userId : null;
+    if (!userId) return res.status(401).json({ error: 'Invalid or missing JWT' });
+
+    // Get user from DB to fetch pingId
+    const User = require('../models/User');
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const pingId = user.pingId;
+    if (!pingId) return res.status(400).json({ error: 'User missing pingId' });
+
+    const { docType, source } = req.body;
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    const filePath = req.file.path;
+    // Use only the file name instead of the full path
+    const filePath = req.file.filename;
+
+    // Create document with pingId
     const doc = await Document.create({
       pingId,
       docType,
       filePath,
       source
     });
+
+    // Add document reference to user's vaultDocs
+    user.vaultDocs.push(doc._id);
+    await user.save();
+
     res.json({ id: doc._id });
   } catch (err) {
     res.status(500).json({ error: 'Upload failed' });

@@ -148,18 +148,23 @@
           <div id="digital-vault">
             <h3>Digital Vault</h3>
             <div class="vault-content">
-              <div class="vault-item">
-                <span class="vault-label">Birth Certificate</span>
-                <span class="vault-status verified">VERIFIED</span>
-              </div>
-              <div class="vault-item">
-                <span class="vault-label">Property Deed</span>
-                <span class="vault-status verified">VERIFIED</span>
-              </div>
-              <div class="vault-item">
-                <span class="vault-label">Tax Records</span>
-                <span class="vault-status verified">VERIFIED</span>
-              </div>
+              <% if (vaultDocs && vaultDocs.length > 0) { %>
+                <% vaultDocs.forEach(function(doc) { %>
+                  <div class="vault-item">
+                    <span class="vault-label"><%= doc.docType ? doc.docType : 'Document' %></span>
+                    <% if (doc.verified) { %>
+                      <span class="vault-status verified">VERIFIED</span>
+                    <% } else { %>
+                      <span class="vault-status unverified">UNVERIFIED</span>
+                    <% } %>
+                    <a href="/<%= doc.filePath %>" target="_blank" class="vault-download">View</a>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="vault-item">
+                  <span class="vault-label">No documents uploaded yet.</span>
+                </div>
+              <% } %>
             </div>
           </div>
         </div>

@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
   const { 'first-name': firstName, 'last-name': lastName, 'pingId': pingId, password } = req.body;
 
   // Find user by firstName, lastName, and pingId
-  const user = await User.findOne({ firstName, lastName, pingId });
+  const user = await User.findOne({ firstName, lastName, pingId }).populate('vaultDocs');
 
   if (!user) {
     // User not found by names and pingId
@@ -97,7 +97,9 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
   res.cookie('token', token, { httpOnly: true });
-  res.redirect('/dashboard');
+
+  // Pass vaultDocs to dashboard view
+  res.render('dashboard', { vaultDocs: user.vaultDocs || [] });
 });
 
 module.exports = router;

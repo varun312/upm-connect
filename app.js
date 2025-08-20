@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth');
 const auth = require('./middleware/auth');
 const path = require('path');
+const User = require('./models/User'); // Add this at the top with other requires
 
 const app = express();
 app.use(express.json());
@@ -40,9 +41,24 @@ app.get('/', (req, res) => {
 });
 app.get('/login', (req, res) => res.render('login'));
 app.get('/register', (req, res) => res.render('register'));
-app.get('/dashboard', auth, (req, res) => {
-  const username = req.user && req.user.username ? req.user.username : 'User';
-  res.render('dashboard', { username });
+app.get('/dashboard', auth, async (req, res) => {
+  try {
+    const userId = req.user && req.user.userId ? req.user.userId : null;
+    if (!userId) {
+      return res.redirect('/login');
+    }
+    // Populate vaultDocs for the user
+    const user = await User.findById(userId).populate('vaultDocs');
+    if (!user) {
+      return res.redirect('/login');
+    }
+    res.render('dashboard', { 
+      username: user.username || 'User',
+      vaultDocs: user.vaultDocs || []
+    });
+  } catch (err) {
+    res.status(500).send('Error loading dashboard');
+  }
 });
 
 app.get('/approval', auth, (req, res) => {
