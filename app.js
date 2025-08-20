@@ -71,7 +71,7 @@ const meetingsRoutes = require('./routes/meetings');
 const adminRoutes = require('./routes/admin');
 const spendingsRoutes = require('./routes/spendings');
 const vaultRoutes = require('./routes/vault');
-const licenseRoutes = require('./routes/license');
+const applicationRoutes = require('./routes/application');
 const adminApprovalRoutes = require('./routes/admin-approval');
 const { url } = require('inspector');
 app.use('/', authRoutes);
@@ -80,7 +80,7 @@ app.use('/', adminRoutes);
 app.use('/', adminApprovalRoutes);
 app.use('/', spendingsRoutes);
 app.use('/', vaultRoutes);
-app.use('/', licenseRoutes);
+app.use('/', applicationRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

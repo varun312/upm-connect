@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apply for Document</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7e8d9; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h1 { text-align: center; }
+        form { display: flex; flex-direction: column; gap: 14px; }
+        label { font-weight: bold; }
+        input, select { padding: 8px; border-radius: 4px; border: 1px solid #bbb; font-size: 1rem; }
+        button { padding: 10px 18px; background: #4a90e2; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        button:hover { background: #357ab8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Apply for Document</h1>
+        <form action="/application-form" method="POST">
+            <label for="pingId">Ping ID</label>
+            <input type="text" id="pingId" name="pingId" required />
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="License">License</option>
+                <option value="Passport">Passport</option>
+                <option value="Voter ID">Voter ID</option>
+                <option value="Aadhaar">Aadhaar</option>
+                <option value="PAN">PAN</option>
+            </select>
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+</body>
+</html>

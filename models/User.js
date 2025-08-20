@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   approvalLevel: { type: Number, min: 0, max: 1, default: 0, required: true },
   chipSerialNumber: { type: String, required: false },
   vaultDocs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Document' }],
-  applications: [{ type: mongoose.Schema.Types.ObjectId }]
+  applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }]
 });
 
 module.exports = mongoose.model('User', userSchema);
