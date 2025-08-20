@@ -1,29 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Meeting</title>
+    <link rel="stylesheet" href="css/globals.css" />
+    <link rel="stylesheet" href="css/login.css" />
     <style>
+        /* Additional meeting-specific styles */
         body { font-family: Arial, sans-serif; background: #f7e8d9; margin: 0; padding: 0; }
-        .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        .container { max-width: 700px; margin: 40px auto; border-radius: 8px; padding: 3px; height: fit-content;}
+        .main-content { 
+            padding: 20px; 
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
         h1 { text-align: center; }
-        form { display: flex; flex-direction: column; gap: 18px; }
+        form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 3px; }
         label { font-weight: bold; }
-        input, textarea { padding: 10px; border-radius: 4px; border: 1px solid #bbb; font-size: 1rem; }
-        button { padding: 12px; background: #826E5A; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
-        button:hover { background: #6d594a; }
+        input, select, textarea { padding: 8px; border-radius: 4px; border: 1px solid #bbb; font-size: 1rem; }
+        input[type="file"] { 
+            padding: 6px 8px; 
+            border: 1px solid #bbb; 
+            border-radius: 4px; 
+            font-size: 1rem; 
+            background: #fff; 
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input[type="file"]:hover { border-color: #999; }
+        input[type="file"]:focus { outline: none; border-color: #4a90e2; box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2); }
+        button { padding: 10px 18px; background: #4a90e2; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        button:hover { background: #357ab8; }
+        textarea { resize: vertical; min-height: 80px; }
     </style>
 </head>
 <body>
     <%- include('partials/header') %>
-    <div class="container">
-        <h1>Create Meeting</h1>
-        <form action="/admin/meetings" method="POST">
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required />
-            <label for="agenda">Agenda</label>
-            <textarea id="agenda" name="agenda" rows="4" required></textarea>
-            <button type="submit">Create Meeting</button>
-        </form>
+    <div class="container">       
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <h1 class="form-title">Create Meeting</h1>
+                <form action="/admin/meetings" method="POST" class="login-form">
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" class="form-input" required />
+                    </div>
+                    <!-- Agenda -->
+                    <div class="form-group">
+                        <label for="agenda">Agenda</label>
+                        <textarea id="agenda" name="agenda" rows="4" class="form-input" required></textarea>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Create Meeting</button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 </body>
 </html>

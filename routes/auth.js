@@ -66,11 +66,6 @@ router.post(
       if (!user) {
         return res.send("User creation failed");
       }
-      const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-        expiresIn: "1h",
-      });
-      res.cookie("token", token, { httpOnly: true });
-
       res.redirect("/login");
     } catch (err) {
       console.error("Registration error:", err);
@@ -114,7 +109,7 @@ router.post("/login", async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).send("Invalid credentials");
 
-  const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1d" });
   res.cookie("token", token, { httpOnly: true });
 
   // Populate user's applications array (references)

@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Meeting Details</title>
+    <link rel="stylesheet" href="css/globals.css" />
+    <link rel="stylesheet" href="css/meeting-detail.css" />
     <style>
-        body { font-family: Arial, sans-serif; background: #f7e8d9; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
-        h1 { text-align: center; }
-        .label { font-weight: bold; color: #826E5A; }
-        .value { margin-bottom: 18px; }
-        .back-link { display: inline-block; margin-top: 24px; color: #826E5A; text-decoration: underline; }
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7e8d9;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #ccc;
+        padding: 32px;
+      }
+      h1 {
+        text-align: center;
+      }
+      .label {
+        font-weight: bold;
+        color: #826e5a;
+      }
+      .value {
+        margin-bottom: 18px;
+      }
+      .back-link {
+        display: inline-block;
+        margin-top: 24px;
+        color: #826e5a;
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <%- include('partials/header') %>
     <div class="container">
-        <h1>Meeting Details</h1>
-        <div class="label">Date:</div>
-        <div class="value"><%= meeting.date.toLocaleDateString() %></div>
-        <div class="label">Agenda:</div>
-        <div class="value"><%= meeting.agenda %></div>
-        <a href="/meeting-minutes" class="back-link">&larr; Back to Meeting Minutes</a>
+      <h1>Meeting Details</h1>
+      <div class="label">Date:</div>
+      <div class="value"><%= meeting.date.toLocaleDateString() %></div>
+      <div class="label">Agenda:</div>
+      <div class="value"><%= meeting.agenda %></div>
+      <a href="/meeting-minutes" class="back-link"
+        >&larr; Back to Meeting Minutes</a
+      >
     </div>
-</body>
+  </body>
 </html>
