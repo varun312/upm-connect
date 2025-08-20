@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - UPM</title>
+    <title>Register - UPM</title>
     <link rel="stylesheet" href="css/globals.css" />
-    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/register.css" />
   </head>
   <body>
     <div class="container">
@@ -18,7 +18,12 @@
         <div class="form-container">
           <h1 class="form-title">Register</h1>
 
-          <form class="login-form" action="/register" method="POST" enctype="multipart/form-data">
+          <form
+            class="login-form"
+            action="/register"
+            method="POST"
+            enctype="multipart/form-data"
+          >
             <!-- First Name -->
             <div class="form-group">
               <label for="first-name">First Name</label>
@@ -46,12 +51,7 @@
             <!-- Date of Birth -->
             <div class="form-group">
               <label for="dob">Date of Birth</label>
-              <input
-                type="date"
-                id="dob"
-                name="dob"
-                class="form-input"
-              />
+              <input type="date" id="dob" name="dob" class="form-input" />
             </div>
 
             <!-- Gender -->
@@ -89,7 +89,7 @@
             </div>
 
             <!-- Username (PingID) -->
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="username">PingID</label>
               <input
                 type="text"
@@ -98,19 +98,17 @@
                 class="form-input"
                 placeholder="Enter your PingID"
               />
-            </div>
+            </div> -->
 
             <!-- Proof of Residence -->
             <div class="form-group">
               <label for="proof-residence">Proof of Residence</label>
-              <input
-                type="file"
-                id="proof-residence"
-                name="proof-residence"
+              <select
+                id="proof-residence-type"
+                name="proof-residence-type"
                 class="form-input"
-                accept=".pdf,.jpg,.jpeg,.png"
-              />
-              <select id="proof-residence-type" name="proof-residence-type" class="form-input" style="width:auto;display:inline-block;margin-left:8px;">
+                style="width: auto; display: inline-block; margin-left: 8px"
+              >
                 <option value="">Select document</option>
                 <option value="utility_bill">Utility Bill</option>
                 <option value="bank_statement">Bank Statement</option>
@@ -118,19 +116,25 @@
                 <option value="government_letter">Government Letter</option>
                 <option value="other">Other</option>
               </select>
+
+              <input
+                type="file"
+                id="proof-residence"
+                name="proof-residence"
+                class="form-input"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
             </div>
 
             <!-- Proof of Identity -->
             <div class="form-group">
               <label for="proof-identity">Proof of Identity</label>
-              <input
-                type="file"
-                id="proof-identity"
-                name="proof-identity"
+              <select
+                id="proof-identity-type"
+                name="proof-identity-type"
                 class="form-input"
-                accept=".pdf,.jpg,.jpeg,.png"
-              />
-              <select id="proof-identity-type" name="proof-identity-type" class="form-input" style="width:auto;display:inline-block;margin-left:8px;">
+                style="width: auto; display: inline-block; margin-left: 8px"
+              >
                 <option value="">Select document</option>
                 <option value="passport">Passport</option>
                 <option value="national_id">National ID</option>
@@ -138,6 +142,13 @@
                 <option value="birth_certificate">Birth Certificate</option>
                 <option value="other">Other</option>
               </select>
+              <input
+                type="file"
+                id="proof-identity"
+                name="proof-identity"
+                class="form-input"
+                accept=".pdf,.jpg,.jpeg,.png"
+              />
             </div>
 
             <!-- Action Buttons -->

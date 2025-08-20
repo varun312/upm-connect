@@ -1,0 +1,321 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* CSS Custom Properties */
+:root {
+  --color-primary-bg: #f5f0e8;
+  --color-primary-text: #000000;
+  --color-primary-border: #000000;
+  --color-secondary-text: #826e5a;
+  --color-accent-blue: #667799;
+  --color-text-hover: #333333;
+  --color-bg-main: #f5f0e8;
+  --color-bg-button: #b7b7a6;
+  --color-bg-cards: #f5f0e8;
+  --color-shadow: #000000;
+  --color-form-bg: #a69d8a;
+  --color-input-bg: #b7b7a6;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Orbitron", sans-serif;
+  --border-radius-small: 2px;
+  --transition-default: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background-color: var(--color-bg-main);
+  color: var(--color-primary-text);
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Removed overflow: hidden to allow scrolling */
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-bg-main);
+  border-bottom: 1px solid var(--color-primary-border);
+  position: relative;
+  height: 70px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.header-left {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo span {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-accent-blue);
+}
+
+.nav {
+  display: flex;
+  gap: 40px;
+  height: 100%;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--color-primary-text);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 0;
+  text-transform: uppercase;
+  transition: var(--transition-color);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-text-hover);
+}
+.header-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.header-right img {
+  width: 40px;
+  height: 20px;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1 1 auto;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+}
+
+/* Form Container */
+.form-container {
+  border-radius: var(--border-radius-small);
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.form-title {
+  font-family: var(--font-secondary);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-primary-text);
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+
+/* Form Styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group proof-residence-type {
+  width: 100%;
+}
+
+.form-group label {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary-text);
+  text-transform: uppercase;
+}
+
+/* Form Inputs */
+.form-input {
+  background: var(--color-input-bg);
+  border: 2px solid var(--color-primary-border);
+  padding: 15px 18px;
+  font-size: 14px;
+  color: var(--color-primary-text);
+  border-radius: var(--border-radius-small);
+  font-family: var(--font-secondary);
+  transition: var(--transition-default);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: #c4c4b3;
+  box-shadow: 3px 3px 0px var(--color-shadow);
+  transform: translate(-1px, -1px);
+}
+
+.form-input::placeholder {
+  color: var(--color-secondary-text);
+  font-family: var(--font-secondary);
+  font-style: italic;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 15px 30px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--color-primary-border);
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: var(--transition-default);
+  text-transform: uppercase;
+  font-family: var(--font-secondary);
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  background: var(--color-accent-blue);
+  color: white;
+  box-shadow: 4px 4px 0px var(--color-shadow);
+}
+
+.btn-primary:hover {
+  background: var(--color-text-hover);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-shadow);
+}
+
+.btn-primary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--color-shadow);
+}
+
+.btn-secondary {
+  background: var(--color-bg-button);
+  color: var(--color-primary-text);
+  box-shadow: 4px 4px 0px var(--color-shadow);
+}
+
+.btn-secondary:hover {
+  background: #a69d8a;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-shadow);
+}
+
+.btn-secondary:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--color-shadow);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .form-group {
+    background-color: rebeccapurple;
+  }
+
+  .form-container {
+    padding: 30px;
+    box-shadow: 6px 6px 0px var(--color-shadow);
+  }
+
+  .form-title {
+    font-size: 24px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  .form-container {
+    padding: 25px;
+    box-shadow: 4px 4px 0px var(--color-shadow);
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .form-input {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 12px 25px;
+    font-size: 13px;
+  }
+
+  .nav {
+    gap: 15px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
