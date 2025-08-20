@@ -1,0 +1,91 @@
+<div class="custom-dialog-overlay"></div>
+<div class="custom-dialog">
+  <form method="POST" action="/raise-in-meeting">
+    <h3>Raise in Meeting</h3>
+    <input type="hidden" name="spendingId" id="raiseSpendingId" value="" />
+    <textarea
+      name="message"
+      rows="5"
+      placeholder="Enter your message..."
+      required
+    ></textarea>
+    <button type="submit" class="create-btn">Create</button>
+  </form>
+</div>
+<style>
+  .custom-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(24, 25, 34, 0.35);
+    z-index: 2000;
+    display: block;
+  }
+  .custom-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff1e6;
+    border: 2px solid #a5a58d;
+    box-shadow: 0 8px 32px rgba(24, 25, 34, 0.18);
+    z-index: 2100;
+    min-width: 340px;
+    border-radius: 8px;
+    animation: fadeIn 0.2s;
+    padding: 32px 32px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .custom-dialog h3 {
+    margin-bottom: 18px;
+    font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+    font-size: 1.2rem;
+    color: #181922;
+  }
+  .custom-dialog textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #a5a58d;
+    font-size: 1rem;
+    background: #e0e0d3;
+    color: #000;
+    outline: none;
+    border-radius: 0;
+    margin-bottom: 18px;
+    font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+    resize: vertical;
+    min-height: 80px;
+  }
+  .create-btn {
+    background: #6b7b9a;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 28px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #181922;
+    border-radius: 0;
+    letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .create-btn:hover {
+    background: #49526b;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

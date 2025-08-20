@@ -1,42 +1,122 @@
 <header class="header">
   <div class="header-left">
-    <a href="/" class="logo">
-      <img src="/assets/arrow.svg" alt="Logo" />
+    <div class="logo">
+      <img src="/assets/logo.svg" alt="UPM Logo" />
       <span>UPM</span>
-    </a>
+    </div>
   </div>
-  <nav class="nav">
-    <ul
-      style="
-        display: flex;
-        gap: 40px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        align-items: center;
-        height: 100%;
-      "
+  <nav class="nav" id="nav">
+    <% if (user && user.approvalLevel === 4) { %>
+    <a href="/admin" class="nav-link" style="background: #a7abaf; color: #fff"
+      >Go Back</a
     >
-      <% if (user && user.approvalLevel === 4) { %>
-      <li>
-        <a
-          href="/admin"
-          class="nav-link"
-          style="background: #a7abaf; color: #fff"
-          >Go Back</a
-        >
-      </li>
-      <% } else { %>
-      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
-      <li><a href="/meeting-minutes" class="nav-link">Meetings</a></li>
-      <li><a href="/spendings" class="nav-link">Spendings</a></li>
-      <li><a href="/vault" class="nav-link">Vault</a></li>
-      <li><a href="/application-form" class="nav-link">New Application</a></li>
-      <% } %>
-      <li><a href="/logout" class="nav-link">Logout</a></li>
-    </ul>
+    <% } else { %>
+    <a href="/dashboard" class="nav-link">Dashboard</a>
+    <a href="/meeting-minutes" class="nav-link">Meetings</a>
+    <a href="/spendings" class="nav-link">Spendings</a>
+    <a href="/vault" class="nav-link">Vault</a>
+    <a href="/application-form" class="nav-link">New Application</a>
+    <% } %>
   </nav>
   <div class="header-right">
-    <!-- Optionally add user avatar or other right-aligned content here -->
+    <% if (user) { %>
+      <img src="/assets/user-icon.svg" alt="UserIcon" id="userIcon" style="cursor:pointer;" />
+    <% } %>
+    <img src="/assets/bell-icon.svg" alt="NotificationIcon" id="bellIcon" style="cursor:pointer;" />
+
+    <% if (user) { %>
+    <!-- User Popup Dialog -->
+    <div id="userDialog" class="popup-dialog" style="display:none;">
+      <div class="popup-content">
+        <span class="close-btn" onclick="closeDialog('userDialog')">&times;</span>
+        <h3>User Profile</h3>
+        <p><strong><%= user.username %></strong></p>
+        <a href="/dashboard" class="popup-link">Dashboard</a><br/>
+        <a href="/logout" class="popup-link">Logout</a>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- Bell Popup Dialog -->
+    <div id="bellDialog" class="popup-dialog" style="display:none;">
+      <div class="popup-content">
+        <span class="close-btn" onclick="closeDialog('bellDialog')">&times;</span>
+        <h3>Notifications</h3>
+        <p>No new notifications.</p>
+      </div>
+    </div>
   </div>
+</header>
+<style>
+  .popup-dialog {
+    position: fixed;
+    top: 70px;
+    right: 40px;
+    background: #fff1e6;
+    border: 2px solid #a5a58d;
+    box-shadow: 0 8px 32px rgba(24,25,34,0.18);
+    z-index: 1000;
+    min-width: 220px;
+    border-radius: 8px;
+    animation: fadeIn 0.2s;
+  }
+  .popup-content {
+    padding: 20px 24px 16px 24px;
+    position: relative;
+  }
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 1.2rem;
+    color: #826e5a;
+    cursor: pointer;
+  }
+  .popup-link {
+    color: #6b7b9a;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin: 6px 0;
+  }
+  .popup-link:hover {
+    text-decoration: underline;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+<script>
+  function closeDialog(id) {
+    document.getElementById(id).style.display = 'none';
+    document.removeEventListener('mousedown', window[id + 'ClickHandler']);
+  }
+  if (document.getElementById('userIcon')) {
+    document.getElementById('userIcon').onclick = function(e) {
+      e.stopPropagation();
+      let dialog = document.getElementById('userDialog');
+      dialog.style.display = 'block';
+      window.userDialogClickHandler = function(event) {
+        if (!dialog.contains(event.target) && event.target.id !== 'userIcon') {
+          dialog.style.display = 'none';
+          document.removeEventListener('mousedown', window.userDialogClickHandler);
+        }
+      };
+      document.addEventListener('mousedown', window.userDialogClickHandler);
+    };
+  }
+  document.getElementById('bellIcon').onclick = function(e) {
+    e.stopPropagation();
+    let dialog = document.getElementById('bellDialog');
+    dialog.style.display = 'block';
+    window.bellDialogClickHandler = function(event) {
+      if (!dialog.contains(event.target) && event.target.id !== 'bellIcon') {
+        dialog.style.display = 'none';
+        document.removeEventListener('mousedown', window.bellDialogClickHandler);
+      }
+    };
+    document.addEventListener('mousedown', window.bellDialogClickHandler);
+  };
+</script>
 </header>

@@ -118,4 +118,9 @@ router.post("/login", async (req, res) => {
   res.redirect("/dashboard");
 });
 
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
+});
+
 module.exports = router;
