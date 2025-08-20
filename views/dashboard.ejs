@@ -118,30 +118,19 @@
           <div class="dashboard-card application-tracker">
             <h3>Application Tracker</h3>
             <div class="tracker-content">
-              <div class="tracker-item">
-                <span class="tracker-label">Driving License</span>
-                <span class="progress-text">In Progress</span>
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 60%"></div>
-                </div>
-              </div>
-              <div class="tracker-item">
-                <span class="tracker-label">Land Record</span>
-                <span class="progress-text">In Progress</span>
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 80%"></div>
-                </div>
-              </div>
-              <div class="tracker-item">
-                <span class="tracker-label">Property Deed</span>
-                <span class="progress-text">Completed</span>
-                <div class="progress-bar">
-                  <div
-                    class="progress-fill completed"
-                    style="width: 100%"
-                  ></div>
-                </div>
-              </div>
+              <% if (vaultDocs && vaultDocs.length > 0) { %>
+                <% vaultDocs.forEach(function(doc) { %>
+                  <% if (!doc.verified) { %>
+                    <div class="tracker-item">
+                      <span class="tracker-label"><%= doc.docType ? doc.docType : 'Document' %></span>
+                      <span class="progress-text">In Progress</span>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%"></div>
+                      </div>
+                    </div>
+                  <% } %>
+                <% }); %>
+              <% } %>
             </div>
           </div>
 
