@@ -1,0 +1,180 @@
+Sparse Table O(1) for min,max quers.
+query formula: min(min(a,a+mx2pl),min(b-mx2pl+1,b))
+
+BIT formula:
+update: k+=k&-k
+query: k-=k&-k
+
+Can determine structure of binary tree using inorder + (pre/post order either work) but not with pre+post
+Unsure about how, investigate later.
+
+Number of shortest paths in graph from node a to all:
+Dijkstra DAG can be made(same length paths included here)
+DP on this DAG.
+
+Kosarajus algorithm for finding strongly connected components.
+one dfs, reverse dfs order acquired.
+now dfs in the order of nodes and reachability is the components.
+(should implement this as well at some point)
+2sat is solvable through above.
+idea: 2n nodes, directed edges of 'truth implications', do strong connected component search is a and ~a in same componenent then bad. else can construct sol through reverse toposort of resulting DAG, try to assign true when possible unless component already has false node, then it must be false.
+
+Finding lca in O(1):
+Construct Euler Tour technique array, however also add nodes when going through them to a different child in dfs.
+dfs(u):
+	order.push(u);
+	for v in g[st]:
+		dfs(v)
+		order.push(u)
+now with this order, construct depth array in that order and do range minimum queries.
+now we have static array, so sparse table does in O(nlogn) pre, O(1) query
+CPH pg 169.
+
+Offline lca finding O(n):
+Use dsu and do dfs, at each node x find all pairs (x,y) to be found, if y visited answer is root(y) else answer not found yet.
+after processing x unite x and p(x) (this is after doing dfs on children also not just queries)
+
+Hierholzers algorithm for eulerian cycle:
+Choose a node x that is currently on the cycle but has an outgoing edge not in cycle. Find cycle of not included edge starting at x and ending at x, add subcycle to final cycle. First cycle can be found by choosing arbitirary x.
+path is similar just convert to cycleable graph.
+
+• Dirac’s theorem: If the degree of each node is at least n/2, the graph
+contains a Hamiltonian path.
+• Ore’s theorem: If the sum of degrees of each non-adjacent pair of nodes is
+at least n, the graph contains a Hamiltonian path.
+
+De Brujin sequences via eulerian path:
+A De Bruijn sequence is a string that contains every string of length n exactly once as a substring, for a fixed alphabet of k characters.
+The idea is to construct a graph where each node contains a string of n −1 characters and each edge adds one character to the string.
+
+Ford Fulkerson:
+Find augmenting path and increase flow along path by decreasing weights of edges by x, increasing weights of reverse edges by x, and adding x to total flow.
+Can be made more efficient by doing bfs aka Edmonds-Karp (O(m^2*n))
+Or by the scaling algorithm, ie start with minima as c and keep dividing by 2 until reachable (O(m2log c)), c is initial minima.
+
+Applications: 
+Max flow = Min cut.
+Edge disjoint path = max flow with edge weights as 1.
+Modified graph: each node is divided into 2 one for incoming edges one for outgoing, both are connected by one edge of weight 1.
+Node disjoint = max flow with edge weights as 1 in modified graph.
+Maximum bipartite matching(unweighted)
+Minimum node cover.
+n-maximum independent set.
+Minimum node disjoint path cover, network is bipartite with 2 nodes for each 1 in original graph, a->b exists if in original graph, Can be generalised by blowing up number of edges based on reachability.(n-maximum path cover)
+Dilworth's theorem: maximum antichain = minimum general path cover
+
+Euler's totient function:
+f(n)=number of numbers smaller than n that are coprime to n
+formula: product of (pi^(ai-1))*(pi-1) across all i
+
+modular inverse: (x^-1) = x^(totient(m)-1)
+
+Diphontaine equation 'ax+by=c' can only be solved if gcd(a,b) | c.
+CPH page 204.
+
+Chinese Remainder theorem:
+given x = a1 (mod m1)
+etc.
+where all pairs mi,mj are coprime.
+Let Xk = m1*m2*m3...*mn/m*k
+now x = a1*X1*(X1^-1(mod m1)) summed over all upto n.
+
+Lagranges theorem: Every number can be represented as sum of 4 square numbers.
+Zeckendorfs' theorem: Every number can be respresented as sum of Fibonacci numbers such that no 2 numbers are equal or consecutive Fibonacci numbers.
+Primitive Pythagorean triplets are of the form: (n^2-m^2,2mn,n^2+m^2) where 0<m<n.
+Wilson's theorem: If n is prime, (n-1)! = n-1 (mod n)
+
+Catalan number formula: 
+(1/n+1)*(2n choose n)
+OR
+Cn = sum of Ci*Cn-i-1 for all i from 0 to n-1
+Applications:
+Number of valid paranthesis sequences with n '(' and n ')'
+Number of binary trees = Cn, Number of rooted binary trees = Cn-1
+
+Derangements: can be calculated through inclusion exclusion principle, of formula: f(n) = 
+0 if n=1;
+1 if n=2;
+(n-1)*(f(n-2)+f(n-1)) if n>2;
+
+Cayley's Formula: n^(n-2) labelled trees exist with n nodes.
+
+Prufer codes: Can reconstruct tree from array of n-2 labels.
+
+Matrix multiplication can be used for finding solutions to functions of the form f(n) = c1*f(n-1)+c2*f(n-2)...ck*(f(n-k)) in k^3log(n)
+CPH page 221
+
+If V is adjacency matrix.
+V^n is number of paths with n edges between all pairs of nodes.
+Shortest path with exactly n edges can also be achieved by min-plus multiplication in weighted V. (This is also associative apparently so exponentiation can be use)
+
+Kirchoffs theorem: number of spanning trees in a graph is determinant of Laplacean matrix of graph, ie L[i,i] = deg(i) L[i,j] = -1 if edge exists, else 0.
+
+Expected values have linearity, ie E[X1+X2] = E[X1]+E[X2] even if X1,X2 depend on each other.
+
+In a binomial distribution, ie if the random is number of successful attempts when n attempts are made where each attempt has a probability of success of p, 
+E[X] = pn
+
+In a geometric distribution, this is the same as binomial but now you stop at first successful attempt and random variable X is the number of attempts required.
+E[X]=1/p
+
+In the nim game, all states wher xor of all elements is 0 are losing state while all others are winning states, this is because you can always go to a state where xor is 0 from non 0 but not from a state where xor is already 0.
+Misere game is similar with opposite goal, same strategy till only one pile with >1 sticks is left, then the strategy deviates, this stage is always reached and has xor != 0 therefore same strats work.
+
+Grundy numbers, essentially losing state is 0, construct graph of states, ans each states grundy number is mex of grundy number of all states it can go to(it is assumed that this graph is a DAG, ie the game must end eventually. Now if there are multiple subgames and players can make moves in any of them then the same strategy as nim is used, xor of grundy numbers across all subgames is made 0.
+
+Grundy's game, each move generates a bunch of subgames, then the grundy number of current game will be mex(g1,g2,g3...) where gk is grundy number after making move k, gk=ak1xorak2xorak3..., where aki are grundy numbers of each of the subgames created.
+
+Trie is a datastructure to store set of strings in O(n), and check if a string exists in the set in O(n)
+
+String hashing(polynomial hashing), O(1) string comparison, can also be used for finding which is lexicographically smaller by doing binary search on commond prefix, O(logn). M should by ~10^18 if a lot of comparisons happening although usually 10^9 is sufficient.
+
+Z-algorithm for finding z array of a string s in O(n), z array is an array where z[i] contains the maximal length of a common substring starting from i and a prefix of s. It maintains s[x..y] with maximal y such that s[x..y] = s[0..y-x], now for each index between x and y, z[i] = z[i-x] if z[i-x] + i < y. If this condition is not true, z[i]>=z[i-x], so we compare char by char starting from y+1,y-x+1.
+Application: pattern matching, simply prepend the string you want to search along with a '#'/special char that doesnt occur in the string. now apply z algorithm and if for any i, z[i] = the length of prepended string, we have an answer.
+Implementation on: CPH page 250
+
+Batching is an interesting square root decomposition technique, we can 'save' root(n) updates at all points, and then 'push' them all at once in batched of root(n) to a datastructure that takes some precomp to get answer based on all of them, and now we just take that answer in faster time for all, and also the answer from the things in the current batch, and merge them, creating a O(nroot(n)) algorithm.
+
+If a positive integer n is represented as a sum of positive integers there can never be any more than O(root(n)) distinct integers. This is helpful in optimizing knapsack to O(droot(d)) where d is the max sum to be attained. We can process numbers in groups, adding one group to the set can be done in O(n) by going from left to right and maintaining what the last valid index was which is congruent to current index modulo k, where k is the value in the current group.
+
+Mo's algo for static range queries, sort queries based on 'block id' primarily, basically l/rootn, and r as tie breaker, now it traverses in O(nrootn) over the queries.
+
+You can do binary search while walking down segment tree. Remember to implement this atleast once.
+
+You can do polynomial updates in lazy segment tree, at each lazy node, store k values where k is maximum degree of polynomial being added, each value is the coefficient of the polynomials. Propogation for this is slightly complicated, however it can be derived from the original polynomial by changing the coefficients slightly, while unpropogated sums can be efficiently calculated by sum formulas like n(n+1)/2.
+
+Persistent segment trees, these store all the states of the segment tree during the execution, essentially whenever updating each node instead of going to its actual left/right child(whichever one has the actual update itself), it goes to a duplicate of that child, possible implementation can be by returning the pointer to the newly created node. and setting that as the child for parent.
+
+2d segment trees, essentially a segtree of segtrees, can query subrectangles by querying first till a node in larger segtree that has a valid range of rows, and then querying for the range of columns inside the segment tree stored here.(such an implementation would also work for n dimensional segment trees, however will be more complex.)
+CPH page 264
+
+Shoelace formula: https://en.wikipedia.org/wiki/Shoelace_formula
+Essentially just do a 'shoelace' on the coordinate matrix, General form is: 2*area =  x_i*y_i+1, for all i modulo n - x_i-y_i-1, for all i modulo n.
+OR
+2A = |sum of cross products of consecutive points, first and last vertices are same|
+This is useful for calculating the area of any polygon using its coordinates.
+Derivation in CPH page 271
+
+Picks theorem: This is a relation between the area, number of lattice points on the boundary, and number of lattice points inside any polygon.
+A=i+b/2-1
+A = area, i = number of lattice points inside the polygon, b = number of lattice points on the boundary.
+https://en.wikipedia.org/wiki/Pick%27s_theorem
+CPH page 272
+
+Complex numbers in cpp, can be used as points:
+Implementation: 
+typedef long long C;
+typedef complex<C> P;
+#define X real()
+#define Y imag()
+Declaring a point:
+P p = {4,2};
+cout << p.X << " " << p.Y << "\n"; // 4 2
+
+The function abs(p) calculate root(x^2+y^2) for p, this is same as length of vector of c, so distance between 2 points can be abs(a-b). (type must be a floating point number)
+The function arg(p) calculates angle of p in radians(can be negative if below x axis)
+The function polar(s,a) constructs a vector whose length is s and that points to an angle a. A vector can be rotated by an angle a by multiplying it by a vector with length 1 and angle a.
+The cross product axb using complex numbers is: (conj(a)*b).Y, if positive b turns left after a, if negative then right, if 0 then it is in a straight line. this can be used to check relative position of a point with respect to a line.
+Area of a triangle is |(a-c)x(b-c)|/2. Can be used to find distance of a point from a line.
+
+Rotating points when dealing with Manhattan distances is very useful. ie make all (x,y) (x+y,y-x), now a problem like finding the maximum Manhattan distance between any 2 points become much easier as distance between any 2 points of original problem just become max(|x1-x2|,|y1-y2|) in the new problem, finding this is much easier.

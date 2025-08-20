@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     type: { type: String, required: true },
     file: { type: String, required: true }
   },
-  approvalLevel: { type: Number, min: 0, max: 1, default: 0, required: true },
+  approvalLevel: { type: Number, min: 0, max: 5, default: 0, required: true },
   chipSerialNumber: { type: String, required: false },
   vaultDocs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Document' }],
   applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }]

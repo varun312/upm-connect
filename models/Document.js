@@ -6,7 +6,7 @@ const documentSchema = new mongoose.Schema({
   filePath: { type: String, required: true },
   source: { type: String, enum: ['service-center', 'scanner', 'mail-in'] },
   createdAt: { type: Date, default: Date.now },
-  verified: { type: Boolean, default: false }
+  status: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
 });
 
 module.exports = mongoose.model('Document', documentSchema);

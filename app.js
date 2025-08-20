@@ -47,14 +47,17 @@ app.get('/dashboard', auth, async (req, res) => {
     if (!userId) {
       return res.redirect('/login');
     }
-    // Populate vaultDocs for the user
-    const user = await User.findById(userId).populate('vaultDocs');
+    // Populate vaultDocs and applications for the user
+    const user = await User.findById(userId)
+      .populate('vaultDocs')
+      .populate('applications');
     if (!user) {
       return res.redirect('/login');
     }
-    res.render('dashboard', { 
+    res.render('dashboard', {
       username: user.username || 'User',
-      vaultDocs: user.vaultDocs || []
+      vaultDocs: user.vaultDocs || [],
+      applications: user.applications || []
     });
   } catch (err) {
     res.status(500).send('Error loading dashboard');

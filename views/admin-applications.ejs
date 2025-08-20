@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Requests - UPM</title>
+  <link rel="stylesheet" href="/css/globals.css" />
+  <link rel="stylesheet" href="/css/spending.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-left">
+          <div class="logo">
+            <img src="assets/logo.svg" alt="UPM Logo" />
+            <span>UPM</span>
+          </div>
+        </div>
+        <nav class="nav" id="nav">
+          <a href="/admin" class="nav-link">User Approvals</a>
+          <a href="/admin/applications" class="nav-link active">Applications</a>
+          <a href="/admin/documents" class="nav-link">Documents</a>
+        </nav>
+        <div class="header-right">
+          <img src="assets/header-end-icon.svg" alt="Header Icon" />
+        </div>
+      </header>
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">Application <span>Requests</span></h1>
+        </div>
+        <div class="table-section">
+          <h2 class="table-title">APPLICATIONS</h2>
+          <div class="table-container">
+            <table class="spending-table">
+              <thead>
+                <tr>
+                  <th>Ping ID</th>
+                  <th>Category</th>
+                  <th>Proof of Residence</th>
+                  <th>Proof of Identity</th>
+                  <th>Vault Documents</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (applications && applications.length > 0) { %>
+                  <% applications.forEach(function(app) { %>
+                    <% const user = users && users.find(u => u.pingId === app.pingId); %>
+                    <tr>
+                      <td><%= app.pingId %></td>
+                      <td><%= app.category %></td>
+                      <td>
+                        <% if (user && user.proofResidence && user.proofResidence.file) { %>
+                          <a href="/uploads/<%= user.proofResidence.file %>" target="_blank">View</a>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td>
+                        <% if (user && user.proofIdentity && user.proofIdentity.file) { %>
+                          <a href="/uploads/<%= user.proofIdentity.file %>" target="_blank">View</a>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td>
+                        <% if (user && user.vaultDocs && user.vaultDocs.length > 0) { %>
+                          <ul style="margin:0; padding-left:18px;">
+                            <% user.vaultDocs.forEach(function(doc) { %>
+                              <li>
+                                <a href="/uploads/<%= doc.filePath %>" target="_blank"><%= doc.docType || 'Document' %></a>
+                              </li>
+                            <% }) %>
+                          </ul>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td><%= app.status %></td>
+                      <td>
+                        <% if (app.status === 'pending') { %>
+                          <form action="/admin/applications/<%= app._id %>/approve" method="POST" style="display:inline;">
+                            <button type="submit">Approve</button>
+                          </form>
+                          <form action="/admin/applications/<%= app._id %>/reject" method="POST" style="display:inline;">
+                            <button type="submit">Reject</button>
+                          </form>
+                        <% } else { %>
+                          <span style="color:#888;">-</span>
+                        <% } %>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="7" style="text-align:center; color:#888;">No applications found.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

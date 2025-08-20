@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="css/newpg.css" />
     <link rel="stylesheet" href="css/globals.css" />
   </head>
-  <body>
-    <div class="container">
+  <body style="height: 100vh; margin: 0; padding: 0; overflow-y: auto; background: #f7e8d9;">
+    <div class="container" style="min-height: 100vh; overflow-y: auto;">
       <!-- Header -->
       <header class="header">
         <div class="header-left">
@@ -118,18 +118,57 @@
           <div class="dashboard-card application-tracker">
             <h3>Application Tracker</h3>
             <div class="tracker-content">
-              <% if (vaultDocs && vaultDocs.length > 0) { %>
-                <% vaultDocs.forEach(function(doc) { %>
-                  <% if (!doc.verified) { %>
-                    <div class="tracker-item">
-                      <span class="tracker-label"><%= doc.docType ? doc.docType : 'Document' %></span>
-                      <span class="progress-text">In Progress</span>
-                      <div class="progress-bar">
-                        <div class="progress-fill" style="width: 50%"></div>
+              <% 
+                // Combine applications and vaultDocs into a single array with type
+                let trackerItems = [];
+                if (applications && applications.length > 0) {
+                  applications.forEach(function(app) {
+                    trackerItems.push({
+                      type: 'Application',
+                      label: app.category,
+                      status: app.status
+                    });
+                  });
+                }
+                if (vaultDocs && vaultDocs.length > 0) {
+                  vaultDocs.forEach(function(doc) {
+                    trackerItems.push({
+                      type: 'Document',
+                      label: doc.docType ? doc.docType : 'Document',
+                      status: doc.status
+                    });
+                  });
+                }
+              %>
+              <% if (trackerItems.length > 0) { %>
+                <% trackerItems.forEach(function(item) { %>
+                  <div class="tracker-item">
+                    <span class="tracker-type" style="display:inline-block; font-size:0.8em; background:#e0e7ef; color:#1e293b; border-radius:4px; padding:2px 8px; margin-right:8px; font-weight:600;">
+                      <%= item.type %>
+                    </span>
+                    <span class="tracker-label"><%= item.label %></span>
+                    <% if (item.status === 'pending') { %>
+                      <span class="progress-text" style="color:#f59e42; font-weight:600; margin-left:10px;">Pending</span>
+                      <div class="progress-bar" style="background:#f3f4f6; height:8px; border-radius:4px; margin-top:6px;">
+                        <div class="progress-fill" style="width: 50%; background:#f59e42; height:100%; border-radius:4px;"></div>
                       </div>
-                    </div>
-                  <% } %>
+                    <% } else if (item.status === 'approved' || item.status === 'verified') { %>
+                      <span class="progress-text" style="color:#22c55e; font-weight:600; margin-left:10px;">Approved</span>
+                      <div class="progress-bar" style="background:#f3f4f6; height:8px; border-radius:4px; margin-top:6px;">
+                        <div class="progress-fill" style="width: 100%; background:#22c55e; height:100%; border-radius:4px;"></div>
+                      </div>
+                    <% } else if (item.status === 'rejected') { %>
+                      <span class="progress-text" style="color:#ef4444; font-weight:600; margin-left:10px;">Rejected</span>
+                      <div class="progress-bar" style="background:#f3f4f6; height:8px; border-radius:4px; margin-top:6px;">
+                        <div class="progress-fill" style="width: 100%; background:#ef4444; height:100%; border-radius:4px;"></div>
+                      </div>
+                    <% } %>
+                  </div>
                 <% }); %>
+              <% } else { %>
+                <div class="tracker-item">
+                  <span class="tracker-label">No applications or documents to track.</span>
+                </div>
               <% } %>
             </div>
           </div>
@@ -141,12 +180,15 @@
                 <% vaultDocs.forEach(function(doc) { %>
                   <div class="vault-item">
                     <span class="vault-label"><%= doc.docType ? doc.docType : 'Document' %></span>
-                    <% if (doc.verified) { %>
-                      <span class="vault-status verified">VERIFIED</span>
+                    <% if (doc.status === 'pending') { %>
+                      <span class="vault-status pending" style="color: #f59e42; font-weight: bold;">PENDING</span>
+                    <% } else if (doc.status === 'verified' || doc.status === 'approved') { %>
+                      <span class="vault-status verified" style="background-color: #fef08a; color: #3a3a3a; font-weight: bold; padding: 2px 8px; border-radius: 4px;">VERIFIED</span>
+                    <% } else if (doc.status === 'rejected') { %>
+                      <span class="vault-status rejected" style="color: #ef4444; font-weight: bold;">REJECTED</span>
                     <% } else { %>
-                      <span class="vault-status unverified">UNVERIFIED</span>
+                      <span class="vault-status unknown" style="color: #888; font-weight: bold;">UNKNOWN</span>
                     <% } %>
-                    <a href="/<%= doc.filePath %>" target="_blank" class="vault-download">View</a>
                   </div>
                 <% }); %>
               <% } else { %>

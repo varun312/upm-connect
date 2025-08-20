@@ -40,6 +40,7 @@ router.post('/vault/upload', auth, upload.single('file'), async (req, res) => {
 
     res.json({ id: doc._id });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: 'Upload failed' });
   }
 });
@@ -58,7 +59,7 @@ router.get('/vault/download/:docId', async (req, res) => {
 });
 
 // GET /vault - show document vault page
-router.get('/vault', async (req, res) => {
+router.get('/vault', auth, async (req, res) => {
   try {
     const docs = await Document.find().sort({ createdAt: -1 });
     res.render('vault', { docs });

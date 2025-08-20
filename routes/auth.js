@@ -98,8 +98,10 @@ router.post('/login', async (req, res) => {
   const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
   res.cookie('token', token, { httpOnly: true });
 
-  // Pass vaultDocs to dashboard view
-  res.render('dashboard', { vaultDocs: user.vaultDocs || [] });
+  // Populate user's applications array (references)
+  await user.populate('applications');
+  // After successful login, redirect to dashboard for consistency
+  res.redirect('/dashboard');
 });
 
 module.exports = router;
