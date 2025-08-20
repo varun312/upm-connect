@@ -84,6 +84,7 @@ const vaultRoutes = require('./routes/vault');
 const applicationRoutes = require('./routes/application');
 const adminApprovalRoutes = require('./routes/admin-approval');
 const { url } = require('inspector');
+const wowUpRoutes = require('./routes/wowUp');
 app.use('/', authRoutes);
 app.use('/', meetingsRoutes);
 app.use('/', adminRoutes);
@@ -91,6 +92,7 @@ app.use('/', adminApprovalRoutes);
 app.use('/', spendingsRoutes);
 app.use('/', vaultRoutes);
 app.use('/', applicationRoutes);
+app.use('/wowUp', wowUpRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

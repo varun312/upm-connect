@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WowUp Document Upload</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <h1>Upload a Document (WowUp)</h1>
+    <form action="/wowUp" method="POST" enctype="multipart/form-data">
+        <input type="file" name="document" required>
+        <button type="submit">Upload</button>
+    </form>
+    <% if (typeof message !== 'undefined') { %>
+        <p><%= message %></p>
+    <% } %>
+    <% if (typeof filePath !== 'undefined' && typeof thumbPath !== 'undefined') { %>
+        <div>
+            <p>Original file: <code><%= filePath %></code></p>
+            <p>Thumbnail: <code><%= thumbPath %></code></p>
+            <img src="<%= thumbPath.replace('uploads', '/uploads') %>" alt="Thumbnail preview" style="border:1px solid #ccc; margin-top:10px;" />
+        </div>
+    <% } %>
+</body>
+</html>
