@@ -1,6 +1,11 @@
+@font-face {
+  font-family: "PPTelegraf";
+  src: url("/public/fonts/PPTelegraf-Regular.otf");
+}
+
 body {
   background: #fff1e6;
-  font-family: "Tahoma", "Verdana", Arial, sans-serif;
+  font-family: "PPTelegraf", "IBM Plex Sans", sans-serif;
   color: #000000;
   margin: 0;
   padding: 0;
@@ -124,8 +129,9 @@ body {
   background: #fff1e6;
 }
 
-tbody, td {
-    font-size: 0.8rem;
+tbody,
+td {
+  font-size: 0.8rem;
 }
 
 .spending-table tr:nth-child(odd) {

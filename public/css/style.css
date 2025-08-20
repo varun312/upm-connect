@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "PPTelegraf";
+  src: url("/public/fonts/PPTelegraf-Regular.otf");
+}
+
 /* CSS Custom Properties */
 :root {
   --color-primary-bg: #f5f0e8;
@@ -16,8 +21,8 @@
   --color-shadow: #000000;
   --color-transparent: transparent;
 
-  --font-primary: "Poppins", sans-serif;
-  --font-secondary: "Orbitron", sans-serif;
+  --font-primary: "PPTelegraf", "IBM Plex Sans", sans-serif;
+  --font-secondary: "IBM Plex Sans", "PPTelegraf", sans-serif;
 
   --border-radius-small: 2px;
 
@@ -188,13 +193,13 @@
 .map-container {
   display: flex;
   justify-content: center;
-  margin-top: -160px;
-  margin-left: 50px;
+  margin-top: -210px;
+  margin-left: 100px;
   width: 100%;
 }
 
 .map {
-  width: clamp(250px, 50vw, 370px);
+  width: clamp(250px, 50vw, 350px);
   height: auto;
   max-width: 100%;
 }
@@ -281,4 +286,3 @@
   text-transform: uppercase;
   text-align: right;
 }
-

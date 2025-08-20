@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "PPTelegraf";
+  src: url("/public/fonts/PPTelegraf-Regular.otf");
+}
+
+/* Application form specific styles can be added here */
+body {
+  font-family: "PPTelegraf", "IBM Plex Sans", sans-serif;
+}
+
+/* Use IBM Plex Sans for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.heading,
+.title,
+.form-title {
+  font-family: "IBM Plex Sans", "PPTelegraf", sans-serif !important;
+}

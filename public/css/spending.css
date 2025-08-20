@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+@font-face {
+  font-family: "PPTelegraf";
+  src: url("/public/fonts/PPTelegraf-Regular.otf");
+}
+
 /* CSS Custom Properties */
 :root {
   --color-primary-bg: #f5f0e8;
@@ -16,8 +21,8 @@
   --color-table-border: #8a7f6b;
   --color-completed: #4a7c59;
   --color-pending: #d4a843;
-  --font-primary: "Poppins", sans-serif;
-  --font-secondary: "Orbitron", sans-serif;
+  --font-primary: "PPTelegraf", "IBM Plex Sans", sans-serif;
+  --font-secondary: "IBM Plex Sans", "PPTelegraf", sans-serif;
   --border-radius-small: 2px;
   --transition-default: all 0.3s ease;
 }
@@ -137,12 +142,12 @@ body {
 }
 
 .page-title span {
-    font-weight: 400;
-    font-size: 12px;
-    font-family: var(--font-secondary);
-    background-color: var(--color-table-header);
-    padding: 5px 10px;
-    border-radius: 50px;
+  font-weight: 400;
+  font-size: 12px;
+  font-family: var(--font-secondary);
+  background-color: var(--color-table-header);
+  padding: 5px 10px;
+  border-radius: 50px;
 }
 
 .history-btn {

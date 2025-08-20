@@ -4,55 +4,126 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Apply for Document</title>
-    <link rel="stylesheet" href="css/globals.css" />
-    <link rel="stylesheet" href="css/application-form.css" />
+    <style>
+      body {
+        font-family: "PPTelegraf", "IBM Plex Sans", sans-serif;
+        background: #fff1e6;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        max-width: 500px;
+        width: 90%;
+        background: #fff1e6;
+        padding: 40px;
+        border-radius: 8px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #000000;
+        font-weight: bold;
+        font-size: 1.5rem;
+        font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      label {
+        font-weight: bold;
+        color: #000000;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      input,
+      select {
+        padding: 12px 15px;
+        border-radius: 4px;
+        border: 2px solid #000000;
+        font-size: 1rem;
+        background: #a5a58d;
+        color: #000000;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      input:focus,
+      select:focus {
+        border-color: #826e5a;
+        background: #a5a58d;
+      }
+      input::placeholder {
+        color: #000000;
+        opacity: 0.7;
+      }
+      button {
+        padding: 12px 24px;
+        background: #826e5a;
+        color: #fff1e6;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s ease;
+      }
+      button:hover {
+        background: #000000;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
   </head>
   <body>
-    <!-- <%- include('partials/header') %> -->
     <div class="container">
-      <!-- Main Content -->
-      <main class="main-content">
-        <div class="form-container">
-          <h1 class="form-title">Apply for Document</h1>
-          <form action="/application-form" method="POST" class="login-form">
-            <div class="form-group">
-              <label for="pingId">Ping ID</label>
-              <input
-                type="text"
-                id="pingId"
-                name="pingId"
-                class="form-input"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                class="form-input"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category" name="category" class="form-input" required>
-                <option value="License">License</option>
-                <option value="Passport">Passport</option>
-                <option value="Voter ID">Voter ID</option>
-                <option value="Aadhaar">Aadhaar</option>
-                <option value="PAN">PAN</option>
-              </select>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">
-                Submit Application
-              </button>
-            </div>
-          </form>
+      <h1>Apply for Document</h1>
+      <form action="/application-form" method="POST">
+        <div class="form-group">
+          <label for="pingId">Ping ID</label>
+          <input
+            type="text"
+            id="pingId"
+            name="pingId"
+            placeholder="Enter your Ping ID"
+            required
+          />
         </div>
-      </main>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">Select document type</option>
+            <option value="License">License</option>
+            <option value="Passport">Passport</option>
+            <option value="Voter ID">Voter ID</option>
+            <option value="Aadhaar">Aadhaar</option>
+            <option value="PAN">PAN</option>
+          </select>
+        </div>
+
+        <button type="submit">Submit Application</button>
+      </form>
     </div>
   </body>
 </html>
