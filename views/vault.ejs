@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document Vault</title>
+    <link rel="stylesheet" href="css/globals.css" />
+    <link rel="stylesheet" href="css/login.css" />
     <style>
+        /* Additional vault-specific styles if needed */
         body { font-family: Arial, sans-serif; background: #f7e8d9; margin: 0; padding: 0; }
-        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        .container { max-width: 700px; margin: 40px auto; border-radius: 8px; padding: 3px; height: fit-content;}
+        .main-content { 
+            padding: 20px; 
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
         h1 { text-align: center; }
-        form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+        form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 3px; }
         label { font-weight: bold; }
         input, select { padding: 8px; border-radius: 4px; border: 1px solid #bbb; font-size: 1rem; }
         button { padding: 10px 18px; background: #4a90e2; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
@@ -16,59 +29,45 @@
         th { background: #f0e6d2; }
         tr:last-child td { border-bottom: none; }
         .actions { display: flex; gap: 10px; }
-        .ref-btn { background: #826E5A; }
+        .ref-btn { background: #826e5a; }
         .ref-btn:hover { background: #6d594a; }
         .dl-btn { background: #0a2342; }
         .dl-btn:hover { background: #16335a; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Document Vault</h1>
-        <form action="/vault/upload" method="POST" enctype="multipart/form-data">
-            <label for="pingId">Ping ID</label>
-            <input type="text" id="pingId" name="pingId" required />
-            <label for="docType">Document Type</label>
-            <input type="text" id="docType" name="docType" />
-            <label for="source">Source</label>
-            <select id="source" name="source" required>
-                <option value="service-center">Service Center</option>
-                <option value="scanner">Scanner</option>
-                <option value="mail-in">Mail-in</option>
-            </select>
-            <label for="file">File</label>
-            <input type="file" id="file" name="file" required />
-            <button type="submit">Upload Document</button>
-        </form>
-        <h2>Existing Documents</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Ping ID</th>
-                    <th>Type</th>
-                    <th>Source</th>
-                    <th>Uploaded</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (docs.length === 0) { %>
-                    <tr><td colspan="5" style="text-align:center; color:#888;">No documents found.</td></tr>
-                <% } %>
-                <% docs.forEach(function(doc) { %>
-                    <tr>
-                        <td><%= doc.pingId %></td>
-                        <td><%= doc.docType || '-' %></td>
-                        <td><%= doc.source %></td>
-                        <td><%= doc.createdAt.toLocaleString() %></td>
-                        <td class="actions">
-                            <a href="/vault/download/<%= doc._id %>"><button type="button" class="dl-btn">Download</button></a>
-                            <a href="/vault/reference/<%= doc._id %>"><button type="button" class="ref-btn">Reference</button></a>
-                        </td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
+    <div class="container">       
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <h1 class="form-title">Document Vault</h1>
+                <form action="/vault/upload" method="POST" enctype="multipart/form-data" class="login-form">
+                    <!-- Document Type -->
+                    <div class="form-group">
+                        <label for="docType">Document Type</label>
+                        <input type="text" id="docType" name="docType" class="form-input" />
+                    </div>
+                    <!-- Source -->
+                    <div class="form-group">
+                        <label for="source">Source</label>
+                        <select id="source" name="source" class="form-input" required>
+                            <option value="service-center">Service Center</option>
+                            <option value="scanner">Scanner</option>
+                            <option value="mail-in">Mail-in</option>
+                        </select>
+                    </div>
+                    <!-- File -->
+                    <div class="form-group">
+                        <label for="file">File</label>
+                        <input type="file" id="file" name="file" class="form-input" required />
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Upload Document</button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 </body>
 </html>
