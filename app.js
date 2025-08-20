@@ -7,7 +7,11 @@ const auth = require('./middleware/auth');
 const path = require('path');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+// Serve uploads directory as static
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
@@ -52,9 +56,12 @@ const adminRoutes = require('./routes/admin');
 const spendingsRoutes = require('./routes/spendings');
 const vaultRoutes = require('./routes/vault');
 const licenseRoutes = require('./routes/license');
+const adminApprovalRoutes = require('./routes/admin-approval');
+const { url } = require('inspector');
 app.use('/', authRoutes);
 app.use('/', meetingsRoutes);
 app.use('/', adminRoutes);
+app.use('/', adminApprovalRoutes);
 app.use('/', spendingsRoutes);
 app.use('/', vaultRoutes);
 app.use('/', licenseRoutes);

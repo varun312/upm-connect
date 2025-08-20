@@ -14,8 +14,7 @@ async function auth(req, res, next) {
       username: user.username,
       approvalLevel: user.approvalLevel
     };
-    // If approvalLevel < 3, only allow access to /approval
-    if (user.approvalLevel < 3 && req.path !== '/approval') {
+    if (user.approvalLevel < 1 && req.path !== '/approval') {
       return res.redirect('/approval');
     }
     next();
