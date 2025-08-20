@@ -1,53 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Meeting Details</title>
-    <link rel="stylesheet" href="css/globals.css" />
-    <link rel="stylesheet" href="css/meeting-detail.css" />
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f7e8d9;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: 40px auto;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px #ccc;
-        padding: 32px;
-      }
-      h1 {
-        text-align: center;
-      }
-      .label {
-        font-weight: bold;
-        color: #826e5a;
-      }
-      .value {
-        margin-bottom: 18px;
-      }
-      .back-link {
-        display: inline-block;
-        margin-top: 24px;
-        color: #826e5a;
-        text-decoration: underline;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Details - UPM</title>
+    <link rel="stylesheet" href="/css/globals.css" />
+    <link rel="stylesheet" href="/css/meeting-detail.css" />
   </head>
   <body>
-    <%- include('partials/header') %>
     <div class="container">
-      <h1>Meeting Details</h1>
-      <div class="label">Date:</div>
-      <div class="value"><%= meeting.date.toLocaleDateString() %></div>
-      <div class="label">Agenda:</div>
-      <div class="value"><%= meeting.agenda %></div>
-      <a href="/meeting-minutes" class="back-link"
-        >&larr; Back to Meeting Minutes</a
-      >
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Back Button -->
+        <div class="back-navigation">
+          <!-- <a class="back-btn" href="meeting.html">← Back to Meetings</a> -->
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">Meeting Details</h1>
+        </div>
+
+        <!-- Details Container -->
+        <div class="details-container">
+          <!-- Info Cards Row -->
+          <div class="info-cards-row">
+            <!-- Agenda Card -->
+            <div class="info-card agenda-card">
+              <div class="card-header">
+                <span class="card-icon">📋</span>
+                <h3>Agenda</h3>
+              </div>
+              <div class="card-content">
+                <p><%= meeting.agenda %></p>
+              </div>
+            </div>
+
+            <!-- Date Card -->
+            <div class="info-card date-card">
+              <div class="card-header">
+                <span class="card-icon">📅</span>
+                <h3>Date</h3>
+              </div>
+              <div class="card-content">
+                <p><%= meeting.date.toLocaleDateString() %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Section -->
+          <div class="summary-section">
+            <div class="section-header">
+              <span class="section-icon">📝</span>
+              <h2>Summary</h2>
+            </div>
+            <div class="summary-content">
+              <p><%= meeting.summary %></p>
+            </div>
+          </div>
+
+          <!-- Details Section -->
+          <div class="details-section">
+            <div class="section-header">
+              <span class="section-icon">📄</span>
+              <h2>Meeting Details</h2>
+            </div>
+            <div class="details-content">
+              <div class="details-scroll">
+                <div class="detail-item">
+                  <h4>Info</h4>
+                  <p><%= meeting.details %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   </body>
 </html>
