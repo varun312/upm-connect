@@ -84,10 +84,10 @@ router.get("/admin/meetings", auth, adminOnly, async (req, res) => {
 
 // POST /admin/meetings - create a new meeting
 router.post("/admin/meetings", auth, adminOnly, async (req, res) => {
-  const { date, agenda } = req.body;
+  const { date, agenda, summary, details } = req.body;
   try {
-    await Meeting.create({ date, agenda });
-    res.redirect("/admin-meetings");
+    await Meeting.create({ date, agenda, summary, details });
+    res.redirect("/meeting-minutes");
   } catch (err) {
     res.status(400).send("Error creating meeting");
   }

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document Requests - UPM</title>
-  <link rel="stylesheet" href="/css/globals.css" />
-  <link rel="stylesheet" href="/css/spending.css" />
+    <link rel="stylesheet" href="/css/globals.css" />
+    <link rel="stylesheet" href="/css/spending.css" />
   </head>
   <body>
     <div class="container">
@@ -26,37 +26,65 @@
                   <th>Source</th>
                   <th>Created At</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th class="actions-header">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <% if (documents && documents.length > 0) { %>
-                  <% documents.forEach(function(doc) { %>
-                    <tr>
-                      <td><%= doc.pingId %></td>
-                      <td><%= doc.docType %></td>
-                      <td><a href="/uploads/<%= doc.filePath %>" target="_blank">View</a></td>
-                      <td><%= doc.source %></td>
-                      <td><%= doc.createdAt ? doc.createdAt.toISOString().slice(0,10) : '' %></td>
-                      <td><%= doc.status %></td>
-                      <td>
-                        <% if (doc.status === 'pending') { %>
-                          <form action="/admin/documents/<%= doc._id %>/approve" method="POST" style="display:inline;">
-                            <button type="submit">Approve</button>
-                          </form>
-                          <form action="/admin/documents/<%= doc._id %>/reject" method="POST" style="display:inline;">
-                            <button type="submit">Reject</button>
-                          </form>
-                        <% } else { %>
-                          <span style="color:#888;">-</span>
-                        <% } %>
-                      </td>
-                    </tr>
-                  <% }) %>
-                <% } else { %>
-                  <tr>
-                    <td colspan="6" style="text-align:center; color:#888;">No document requests found.</td>
-                  </tr>
+                <% if (documents && documents.length > 0) { %> <%
+                documents.forEach(function(doc) { %>
+                <tr>
+                  <td><%= doc.pingId %></td>
+                  <td><%= doc.docType %></td>
+                  <td>
+                    <a href="/uploads/<%= doc.filePath %>" target="_blank"
+                      >View</a
+                    >
+                  </td>
+                  <td><%= doc.source %></td>
+                  <td>
+                    <%= doc.createdAt ? doc.createdAt.toISOString().slice(0,10)
+                    : '' %>
+                  </td>
+                  <td><%= doc.status %></td>
+                  <td>
+                    <% if (doc.status === 'pending') { %>
+                    <form
+                      action="/admin/documents/<%= doc._id %>/approve"
+                      method="POST"
+                      style="display: inline"
+                    >
+                      <button type="submit" class="action-btn approve-btn">
+                        Approve
+                      </button>
+                    </form>
+                    <form
+                      action="/admin/documents/<%= doc._id %>/reject"
+                      method="POST"
+                      style="display: inline"
+                    >
+                      <button type="submit" class="action-btn reject-btn">
+                        Reject
+                      </button>
+                    </form>
+                    <% } else if (doc.status === 'verified') { %>
+                    <button class="action-btn approve-btn" disabled>
+                      Approved
+                    </button>
+                    <% } else if (doc.status === 'rejected') { %>
+                    <button class="action-btn reject-btn" disabled>
+                      Rejected
+                    </button>
+                    <% } else { %>
+                    <span style="color: #888">-</span>
+                    <% } %>
+                  </td>
+                </tr>
+                <% }) %> <% } else { %>
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #888">
+                    No document requests found.
+                  </td>
+                </tr>
                 <% } %>
               </tbody>
             </table>
@@ -64,5 +92,45 @@
         </div>
       </main>
     </div>
+    <style>
+      .action-btn {
+        font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+        font-size: 1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 8px 22px;
+        margin: 2px 2px;
+        cursor: pointer;
+        box-shadow: 2px 2px 0 #181922;
+        outline: none;
+        border-radius: 0;
+        letter-spacing: 1px;
+        border: 2px solid #fff1e6;
+        transition: background 0.2s, color 0.2s;
+      }
+      .approve-btn {
+        background: #3cb371;
+        color: #fff;
+      }
+      .approve-btn:hover {
+        background: #2e8b57;
+        color: #fff;
+      }
+      .reject-btn {
+        background: #e63946;
+        color: #fff;
+      }
+      .reject-btn:hover {
+        background: #b71c1c;
+        color: #fff;
+      }
+      .actions-header {
+        text-align: center;
+      }
+      .spending-table th:last-child,
+      .spending-table td:last-child {
+        text-align: center;
+      }
+    </style>
   </body>
 </html>

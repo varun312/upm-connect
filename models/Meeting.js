@@ -1,8 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const meetingSchema = new mongoose.Schema({
   date: { type: Date, required: true },
-  agenda: { type: String, required: true }
+  agenda: { type: String, required: true },
+  summary: { type: String, required: true },
+  details: { type: String, required: true },
 });
 
-module.exports = mongoose.model('Meeting', meetingSchema);
+module.exports = mongoose.model("Meeting", meetingSchema);
