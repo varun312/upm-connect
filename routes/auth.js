@@ -5,8 +5,10 @@ const User = require("../models/User");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const crypto = require("crypto");
+const { encryptField, decryptField } = require("./../cryptoHelper");
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -37,18 +39,27 @@ router.post(
       dob,
       gender,
       adres,
-      "issue-date": issuedate,
+  // Remove issuedate from user input, use current date instead
       "proof-residence-type": proofResidenceType,
       "proof-identity-type": proofIdentityType,
     } = req.body;
+      const pingId = Math.floor(
+    100000000000 + Math.random() * 900000000000
+  ).toString();
+    const plainPassword = crypto
+      .randomBytes(8)
+      .toString("base64")
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .slice(0, 10);
+    const hashedPassword = await bcrypt.hash(plainPassword, 10); // Hash password
     try {
       const user = await new User({
-        firstName,
-        lastName,
+        firstName: encryptField(firstName),
+        lastName: encryptField(lastName),
         dob,
         gender,
-        adres,
-        issuedate,
+        adres: encryptField(adres),
+  issuedate: new Date(),
         proofResidence: {
           type: proofResidenceType,
           file: req.files["proof-residence"]
@@ -61,12 +72,14 @@ router.post(
             ? req.files["proof-identity"][0].filename
             : undefined,
         },
+        pingId: pingId,
+        password: hashedPassword,
       });
       await user.save();
       if (!user) {
         return res.send("User creation failed");
       }
-      res.redirect("/login");
+      res.send("pingId: "+ user.toJSON()["pingId"] + "<br>password: " + plainPassword);
     } catch (err) {
       console.error("Registration error:", err);
       if (err.code === 11000) {

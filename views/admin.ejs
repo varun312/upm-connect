@@ -43,8 +43,6 @@
                     <th>Proof of Residence</th>
                     <th>Proof of Identity</th>
                     <th>Approve</th>
-                    <th>PING ID</th>
-                    <th>Password</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -79,8 +77,6 @@
                         Approve
                       </button>
                     </td>
-                    <td id="ping-<%= user._id %>"></td>
-                    <td id="pass-<%= user._id %>"></td>
                   </tr>
                   <% }) %> <% } else { %>
                   <tr>
@@ -109,9 +105,6 @@
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
-              document.getElementById("ping-" + userId).innerText = data.pingId;
-              document.getElementById("pass-" + userId).innerText =
-                data.password;
               document.getElementById("user-row-" + userId).style.background =
                 "#d4ffd4";
               // Disable the approve button after approval
