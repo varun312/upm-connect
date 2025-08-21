@@ -89,26 +89,32 @@
     <div class="container">
       <h1>Apply for Document</h1>
       <form action="/application-form" method="POST">
+
         <div class="form-group">
-          <label for="pingId">Ping ID</label>
-          <input
-            type="text"
-            id="pingId"
-            name="pingId"
-            placeholder="Enter your Ping ID"
-            required
-          />
+          <label for="proofIdentity">Proof of Identity</label>
+          <select id="proofIdentity" name="proofIdentity" required>
+            <option value="">Select proof of identity</option>
+            <% if (typeof proofDocs !== 'undefined' && proofDocs.length > 0) { %>
+              <% const seen = new Set(); %>
+              <% proofDocs.forEach(function(doc) { %>
+                <% if (!seen.has(doc.id)) { seen.add(doc.id); %>
+                  <option value="<%= doc.id %>"><%= doc.docType %></option>
+                <% } %>
+              <% }); %>
+            <% } %>
+          </select>
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-          />
+          <label for="proofResidence">Proof of Residence</label>
+          <select id="proofResidence" name="proofResidence" required>
+            <option value="">Select proof of residence</option>
+            <% if (typeof proofDocs !== 'undefined' && proofDocs.length > 0) { %>
+              <% proofDocs.forEach(function(doc) { %>
+                <option value="<%= doc.id %>"><%= doc.docType %></option>
+              <% }); %>
+            <% } %>
+          </select>
         </div>
 
         <div class="form-group">

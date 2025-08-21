@@ -6,14 +6,21 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
+const fs = require("fs"); // Add fs module
 const { encryptField, decryptField } = require("./../cryptoHelper");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads"));
+    cb(null, uploadsDir);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -93,17 +100,22 @@ router.post(
 
 // Login route
 router.post("/login", async (req, res) => {
-  const {
+  let {
     "first-name": firstName,
     "last-name": lastName,
-    pingId: pingId,
+    pingId,
     password,
   } = req.body;
 
-  // Find user by firstName, lastName, and pingId
-  const user = await User.findOne({ firstName, lastName, pingId }).populate(
+  // Find user by pingId
+  const user = await User.findOne({ pingId }).populate(
     "vaultDocs"
   );
+
+  if (firstName !== decryptField(user.firstName) || lastName !== decryptField(user.lastName)) {
+    // Name mismatch
+    return res.status(400).send("User not found");
+  }
 
   if (!user) {
     // User not found by names and pingId

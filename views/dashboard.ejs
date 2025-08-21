@@ -23,22 +23,18 @@
               <h3>Core Services</h3>
             </div>
             <div class="card-content">
-              <div class="service-item">
-                <span class="service-icon">📋</span>
-                <span>Apply for permits</span>
-              </div>
-              <div class="service-item">
-                <span class="service-icon">🏠</span>
-                <span>Property Records</span>
-              </div>
-              <div class="service-item">
+              <a class="service-item" href="/business-application-form" style="text-decoration:none; color:inherit;">
+                <span class="service-icon">🏢</span>
+                <span>Business Application</span>
+              </a>
+              <a class="service-item" href="/vehicle-registration-form" style="text-decoration:none; color:inherit;">
                 <span class="service-icon">🚗</span>
                 <span>Vehicle Registration</span>
-              </div>
-              <div class="service-item">
+              </a>
+              <a class="service-item" href="/loan-application-form" style="text-decoration:none; color:inherit;">
                 <span class="service-icon">💰</span>
-                <span>Pay taxes online</span>
-              </div>
+                <span>Loan Application</span>
+              </a>
             </div>
           </div>
 
@@ -50,14 +46,14 @@
               <h3>Transparency Hub</h3>
             </div>
             <div class="card-content">
-              <div class="service-item">
+              <a class="service-item" href="/spendings" style="text-decoration:none; color:inherit;">
                 <span class="service-icon">📊</span>
                 <span>Open spending tracker</span>
-              </div>
-              <div class="service-item">
+              </a>
+              <a class="service-item" href="/meeting-minutes" style="text-decoration:none; color:inherit;">
                 <span class="service-icon">📝</span>
                 <span>Meeting minutes</span>
-              </div>
+              </a>
               <div class="service-item">
                 <span class="service-icon">🗳️</span>
                 <span>Election results</span>
@@ -103,13 +99,40 @@
             <h3>Application Tracker</h3>
             <div class="tracker-content">
               <% 
-                // Combine applications and vaultDocs into a single array with type
+                // Combine all applications and vaultDocs into a single array with type
                 let trackerItems = [];
                 if (applications && applications.length > 0) {
                   applications.forEach(function(app) {
                     trackerItems.push({
                       type: 'Application',
                       label: app.category,
+                      status: app.status
+                    });
+                  });
+                }
+                if (typeof businessApplications !== 'undefined' && businessApplications.length > 0) {
+                  businessApplications.forEach(function(app) {
+                    trackerItems.push({
+                      type: 'Business Application',
+                      label: app.businessName,
+                      status: app.status
+                    });
+                  });
+                }
+                if (typeof loanApplications !== 'undefined' && loanApplications.length > 0) {
+                  loanApplications.forEach(function(app) {
+                    trackerItems.push({
+                      type: 'Loan Application',
+                      label: app.loanPurpose + ' - ' + app.loanAmount,
+                      status: app.status
+                    });
+                  });
+                }
+                if (typeof vehicleRegistrations !== 'undefined' && vehicleRegistrations.length > 0) {
+                  vehicleRegistrations.forEach(function(app) {
+                    trackerItems.push({
+                      type: 'Vehicle Registration',
+                      label: app.vehicleType + ' - ' + app.vehicleModel,
                       status: app.status
                     });
                   });

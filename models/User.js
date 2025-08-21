@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   issuedate: { type: Date, required: true },
   pingId: { type: String, required: false },
   password: { type: String, required: false },
+  // proofResidence and proofIdentity are objects with { type, file }
   proofResidence: {
     type: { type: String, required: true },
     file: { type: String, required: true }

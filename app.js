@@ -63,19 +63,32 @@ app.get("/dashboard", auth, async (req, res) => {
       return res.redirect("/login");
     }
     // Populate vaultDocs and applications for the user
+    const BusinessApplication = require("./models/BusinessApplication");
+    const LoanApplication = require("./models/LoanApplication");
+    const VehicleRegistration = require("./models/VehicleRegistration");
     const user = await User.findById(userId)
       .populate("vaultDocs")
       .populate("applications");
     if (!user) {
       return res.redirect("/login");
     }
+    // Fetch all business, loan, and vehicle applications for this user
+    const businessApplications = await BusinessApplication.find({ user: userId });
+    const loanApplications = await LoanApplication.find({ user: userId });
+    const vehicleRegistrations = await VehicleRegistration.find({ user: userId });
+    user.firstName = req.user.firstName;
+    user.lastName = req.user.lastName;
     res.render("dashboard", {
       user: user,
       username: user.username || "User",
       vaultDocs: user.vaultDocs || [],
       applications: user.applications || [],
+      businessApplications,
+      loanApplications,
+      vehicleRegistrations
     });
   } catch (err) {
+    console.log(err);
     res.status(500).send("Error loading dashboard");
   }
 });
@@ -85,7 +98,7 @@ app.get("/approval", auth, (req, res) => {
     req.user && typeof req.user.approvalLevel === "number"
       ? req.user.approvalLevel
       : 0;
-  res.render("approval", { approvalLevel, user: req.user || null });
+  res.json({ approvalLevel, user: req.user || null });
 });
 
 const meetingsRoutes = require("./routes/meetings");

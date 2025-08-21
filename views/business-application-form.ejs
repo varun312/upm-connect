@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Application</title>
+    <style>
+      body { font-family: "PPTelegraf", "IBM Plex Sans", sans-serif; background: #fff1e6; margin: 0; padding: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+      .container { max-width: 500px; width: 90%; background: #fff1e6; padding: 40px; border-radius: 8px; }
+      h1 { text-align: center; margin-bottom: 30px; color: #000000; font-weight: bold; font-size: 1.5rem; font-family: "IBM Plex Sans", "PPTelegraf", sans-serif; }
+      form { display: flex; flex-direction: column; gap: 20px; }
+      label { font-weight: bold; color: #000000; font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+      input, select { padding: 12px 15px; border: 2px solid #000000; font-size: 1rem; background: #d3d3c2; color: #000000; outline: none; transition: all 0.3s ease; }
+      input:focus, select:focus { border-color: #826e5a; background: #d3d3c2; box-shadow: 4px 4px 0 #181922; }
+      input::placeholder { color: #000000; opacity: 0.7; }
+      button { padding: 12px 24px; background: #6b7b9a; color: #fff; border: none; font-size: 1rem; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: background 0.3s ease; box-shadow: 4px 4px 0 #181922; letter-spacing: 1px; }
+      button:hover { background: #49526b; }
+      .form-group { display: flex; flex-direction: column; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Business Application</h1>
+      <form action="/business-application" method="POST">
+        <div class="form-group">
+          <label for="businessName">Business Name</label>
+          <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required />
+        </div>
+        <div class="form-group">
+          <label for="businessType">Business Type</label>
+          <input type="text" id="businessType" name="businessType" placeholder="e.g. Private Ltd, Partnership" required />
+        </div>
+        <div class="form-group">
+          <label for="registrationNumber">Registration Number</label>
+          <input type="text" id="registrationNumber" name="registrationNumber" placeholder="Enter registration number" required />
+        </div>
+        <div class="form-group">
+          <label for="gstNumber">GST Number</label>
+          <input type="text" id="gstNumber" name="gstNumber" placeholder="Enter GST number" />
+        </div>
+        <div class="form-group">
+          <label for="proofIdentity">Proof of Identity</label>
+          <select id="proofIdentity" name="proofIdentity" required>
+            <option value="">Select proof of identity</option>
+            <% if (typeof proofDocs !== 'undefined' && proofDocs.length > 0) { %>
+              <% const seen = new Set(); %>
+              <% proofDocs.forEach(function(doc) { %>
+                <% if (!seen.has(doc.id)) { seen.add(doc.id); %>
+                  <option value="<%= doc.id %>"><%= doc.docType %></option>
+                <% } %>
+              <% }); %>
+            <% } %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="proofResidence">Proof of Residence</label>
+          <select id="proofResidence" name="proofResidence" required>
+            <option value="">Select proof of residence</option>
+            <% if (typeof proofDocs !== 'undefined' && proofDocs.length > 0) { %>
+              <% proofDocs.forEach(function(doc) { %>
+                <option value="<%= doc.id %>"><%= doc.docType %></option>
+              <% }); %>
+            <% } %>
+          </select>
+        </div>
+        <button type="submit">Submit Application</button>
+      </form>
+    </div>
+  </body>
+</html>
