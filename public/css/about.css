@@ -1,0 +1,104 @@
+.about-main-container {
+  display: flex;
+  flex-direction: row;
+  background: linear-gradient(90deg, #fff1e6 60%, #f7e6d7 100%);
+  min-height: 100vh;
+  font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+}
+
+.about-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 350px;
+  padding: 40px 0 0 0;
+}
+
+
+.about-register-btn {
+  background: #a5a58d;
+  color: #181922;
+  border: none;
+  font-size: 1.1rem;
+  font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 38px;
+  margin-top: 30px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #181922;
+  border-radius: 0;
+  letter-spacing: 1px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.about-register-btn:hover {
+  background: #826e5a;
+  color: #fff;
+}
+
+.about-right {
+  flex: 2;
+  padding: 60px 60px 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.about-title {
+  font-size: 2.6rem;
+  font-family: "IBM Plex Sans", "PPTelegraf", sans-serif;
+  font-weight: bold;
+  color: #181922;
+  margin-bottom: 18px;
+  text-shadow: 2px 2px 0 #a5a58d;
+  letter-spacing: 2px;
+}
+
+.about-desc {
+  font-size: 1.2rem;
+  color: #181922;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+.about-body {
+  font-size: 1rem;
+  color: #181922;
+  margin-bottom: 32px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.about-instructions-title {
+  font-size: 1.3rem;
+  color: #181922;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 18px;
+  letter-spacing: 1px;
+}
+
+.about-instructions {
+  font-size: 1rem;
+  color: #181922;
+  max-width: 600px;
+}
+
+.about-instructions p {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.about-instructions ol {
+  margin: 0 0 0 18px;
+  padding: 0;
+}
+
+.about-instructions li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}

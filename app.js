@@ -45,6 +45,11 @@ app.get("/", async (req, res) => {
   }
   res.render("index", { title: "Home", user: user || null });
 });
+
+app.get("/about", (req, res) => {
+  res.render("about", { user: req.user || null });
+});
+
 app.get("/login", (req, res) =>
   res.render("login", { user: req.user || null })
 );

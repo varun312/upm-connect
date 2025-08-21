@@ -7,10 +7,10 @@
 
 /* CSS Custom Properties */
 :root {
-  --color-primary-bg: #f5f0e8;
+  --color-primary-bg: #fdfdfd;
   --color-primary-text: #000000;
   --color-primary-border: #000000;
-  --color-secondary-text: #826e5a;
+  --color-secondary-text: #292522;
   --color-accent-blue: #667799;
   --color-text-hover: #333333;
   --color-bg-main: #f5f0e8;
@@ -42,6 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--color-bg-main);
 }
 
 /* Header */
@@ -118,6 +119,7 @@ body {
   margin-top: 50px;
   flex-direction: column;
   justify-content: center;
+  background-color: var(--color-bg-main);
   gap: 30px;
 }
 
@@ -294,8 +296,9 @@ body {
 
 .vault-item {
   display: flex;
-  background-color: #5d966e;
+  background-color: #f0f0f0;
   padding: 5px 20px;
+  border: 1px solid var(--color-primary-border);
   box-shadow: 6px 6px 0px var(--color-shadow);
   justify-content: space-between;
   align-items: center;
@@ -309,13 +312,14 @@ body {
   font-size: 12px;
   font-family: var(--font-secondary);
   font-weight: 500;
-  color: var(--color-bg-cards);
+  color: var(--color-primary-border);
 }
 
 .vault-status {
   font-size: 10px;
   font-family: var(--font-secondary);
   font-weight: 600;
+  color: var(--color-secondary-text);
   padding: 4px 12px;
 }
 
