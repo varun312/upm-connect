@@ -71,7 +71,7 @@ router.post(
           pingId,
           docType: proofResidenceType,
           filePath: req.files["proof-residence"][0].filename,
-          source: "register"
+          source: "service-center"
         });
         vaultDocs.push(doc._id);
         proofResidenceObj = { type: proofResidenceType, file: req.files["proof-residence"][0].filename };
@@ -83,7 +83,7 @@ router.post(
           pingId,
           docType: proofIdentityType,
           filePath: req.files["proof-identity"][0].filename,
-          source: "register"
+          source: "service-center"
         });
         vaultDocs.push(doc._id);
         proofIdentityObj = { type: proofIdentityType, file: req.files["proof-identity"][0].filename };

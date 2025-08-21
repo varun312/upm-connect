@@ -17,26 +17,25 @@ router.get("/admin", auth, adminOnly, async (req, res) => {
   res.render("admin", { users, user: user || null });
 });
 
-// POST /admin/approve/:id - approve a user
+
+// POST /admin/approve/:id - approve a user and verify their documents
 router.post("/admin/approve/:id", async (req, res) => {
   const userId = req.params.id;
-  // // Generate a random 12-digit numeric pingId
-  // const pingId = Math.floor(
-  //   100000000000 + Math.random() * 900000000000
-  // ).toString();
-  // const plainPassword = crypto
-  //   .randomBytes(8)
-  //   .toString("base64")
-  //   .replace(/[^a-zA-Z0-9]/g, "")
-  //   .slice(0, 10);
-  // const hashedPassword = await bcrypt.hash(plainPassword, 10); // Hash password
-
+  // Set approvalLevel to 1
   const user = await User.findByIdAndUpdate(
     userId,
-    { $set: { approvalLevel: 1} },
+    { $set: { approvalLevel: 1 } },
     { new: true }
   );
-  res.json({ success: true, pingId: user.pingId }); // Return plain password to admin
+  // Mark all vaultDocs as verified
+  if (user && user.vaultDocs && user.vaultDocs.length > 0) {
+    const Document = require("../models/Document");
+    await Document.updateMany(
+      { _id: { $in: user.vaultDocs } },
+      { $set: { status: "verified" } }
+    );
+  }
+  res.json({ success: true, pingId: user.pingId });
 });
 
 module.exports = router;
