@@ -1,0 +1,80 @@
+/* Townhall Chat UI - Consistent with Admin UI */
+
+.main-content {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 32px 32px 24px 32px;
+}
+.chat-header {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2a7ae2;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+.chat-messages {
+  height: 320px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  padding: 18px 14px;
+  margin-bottom: 20px;
+  background: #f7f7f7;
+  border-radius: 6px;
+  font-size: 1.08rem;
+}
+.chat-message {
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ececec;
+}
+.chat-message:last-child {
+  border-bottom: none;
+}
+.chat-message .user {
+  font-weight: 600;
+  color: #2a7ae2;
+}
+.chat-message .time {
+  color: #b0b0b0;
+  font-size: 0.93em;
+  margin-left: 8px;
+}
+.chat-message .text {
+  margin-left: 6px;
+  color: #222;
+}
+.chat-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 0;
+}
+.chat-form input[type=text] {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #bdbdbd;
+  font-size: 1rem;
+}
+.chat-form button {
+  padding: 10px 22px;
+  border: none;
+  background: #2a7ae2;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-form button:hover {
+  background: #155a9c;
+}
+.chat-username {
+  margin-top: 18px;
+  color: #888;
+  font-size: 1.05em;
+  text-align: right;
+}
