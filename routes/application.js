@@ -17,14 +17,6 @@ router.get('/application-form', auth, async (req, res) => {
     if (user.vaultDocs && user.vaultDocs.length > 0) {
       proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
     }
-    // Add proofIdentity
-    if (user.proofIdentity && user.proofIdentity.type && user.proofIdentity.file) {
-      proofDocs.push({ id: user.proofIdentity.file, docType: user.proofIdentity.type });
-    }
-    // Add proofResidence
-    if (user.proofResidence && user.proofResidence.type && user.proofResidence.file) {
-      proofDocs.push({ id: user.proofResidence.file, docType: user.proofResidence.type });
-    }
   }
   res.render('application-form', { user: user || null, proofDocs });
 });
@@ -56,34 +48,31 @@ router.post('/application-form', auth, async (req, res) => {
 router.get('/business-application-form', auth, async (req, res) => {
   const user = await User.findById(req.user.userId).populate('vaultDocs');
   let proofDocs = [];
-  if (user) {
-    if (user.vaultDocs && user.vaultDocs.length > 0) {
-      proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
-    }
-    if (user.proofIdentity && user.proofIdentity.type && user.proofIdentity.file) {
-      proofDocs.push({ id: user.proofIdentity.file, docType: user.proofIdentity.type });
-    }
-    if (user.proofResidence && user.proofResidence.type && user.proofResidence.file) {
-      proofDocs.push({ id: user.proofResidence.file, docType: user.proofResidence.type });
-    }
+  if (user && user.vaultDocs && user.vaultDocs.length > 0) {
+    proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
   }
   res.render('business-application-form', { user: user || null, proofDocs });
 });
 
 // POST /business-application - save business form data
+const mongoose = require('mongoose');
 router.post('/business-application', auth, async (req, res) => {
   try {
     const { businessName, businessType, registrationNumber, gstNumber, proofIdentity, proofResidence } = req.body;
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(400).send('User not found');
+    // Only store as ObjectId if valid
+    console.log(proofIdentity, proofResidence);
+    const proofIdentityId = mongoose.Types.ObjectId.isValid(proofIdentity) ? proofIdentity : null;
+    const proofResidenceId = mongoose.Types.ObjectId.isValid(proofResidence) ? proofResidence : null;
     const app = new BusinessApplication({
       user: user._id,
       businessName,
       businessType,
       registrationNumber,
       gstNumber,
-      proofIdentity,
-      proofResidence
+      proofIdentity: proofIdentityId,
+      proofResidence: proofResidenceId
     });
     await app.save();
     user.applications.push(app._id);
@@ -99,16 +88,8 @@ router.post('/business-application', auth, async (req, res) => {
 router.get('/loan-application-form', auth, async (req, res) => {
   const user = await User.findById(req.user.userId).populate('vaultDocs');
   let proofDocs = [];
-  if (user) {
-    if (user.vaultDocs && user.vaultDocs.length > 0) {
-      proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
-    }
-    if (user.proofIdentity && user.proofIdentity.type && user.proofIdentity.file) {
-      proofDocs.push({ id: user.proofIdentity.file, docType: user.proofIdentity.type });
-    }
-    if (user.proofResidence && user.proofResidence.type && user.proofResidence.file) {
-      proofDocs.push({ id: user.proofResidence.file, docType: user.proofResidence.type });
-    }
+  if (user && user.vaultDocs && user.vaultDocs.length > 0) {
+    proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
   }
   res.render('loan-application-form', { user: user || null, proofDocs });
 });
@@ -119,14 +100,16 @@ router.post('/loan-application', auth, async (req, res) => {
     const { loanAmount, loanPurpose, tenure, annualIncome, proofIdentity, proofResidence } = req.body;
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(400).send('User not found');
+    const proofIdentityId = mongoose.Types.ObjectId.isValid(proofIdentity) ? proofIdentity : null;
+    const proofResidenceId = mongoose.Types.ObjectId.isValid(proofResidence) ? proofResidence : null;
     const app = new LoanApplication({
       user: user._id,
       loanAmount,
       loanPurpose,
       tenure,
       annualIncome,
-      proofIdentity,
-      proofResidence
+      proofIdentity: proofIdentityId,
+      proofResidence: proofResidenceId
     });
     await app.save();
     user.applications.push(app._id);
@@ -142,16 +125,8 @@ router.post('/loan-application', auth, async (req, res) => {
 router.get('/vehicle-registration-form', auth, async (req, res) => {
   const user = await User.findById(req.user.userId).populate('vaultDocs');
   let proofDocs = [];
-  if (user) {
-    if (user.vaultDocs && user.vaultDocs.length > 0) {
-      proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
-    }
-    if (user.proofIdentity && user.proofIdentity.type && user.proofIdentity.file) {
-      proofDocs.push({ id: user.proofIdentity.file, docType: user.proofIdentity.type });
-    }
-    if (user.proofResidence && user.proofResidence.type && user.proofResidence.file) {
-      proofDocs.push({ id: user.proofResidence.file, docType: user.proofResidence.type });
-    }
+  if (user && user.vaultDocs && user.vaultDocs.length > 0) {
+    proofDocs = user.vaultDocs.map(doc => ({ id: doc._id, docType: doc.docType || doc.filePath }));
   }
   res.render('vehicle-registration-form', { user: user || null, proofDocs });
 });
@@ -162,6 +137,8 @@ router.post('/vehicle-registration', auth, async (req, res) => {
     const { ownerName, vehicleType, vehicleModel, chassisNumber, engineNumber, proofIdentity, proofResidence } = req.body;
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(400).send('User not found');
+    const proofIdentityId = mongoose.Types.ObjectId.isValid(proofIdentity) ? proofIdentity : null;
+    const proofResidenceId = mongoose.Types.ObjectId.isValid(proofResidence) ? proofResidence : null;
     const app = new VehicleRegistration({
       user: user._id,
       ownerName,
@@ -169,8 +146,8 @@ router.post('/vehicle-registration', auth, async (req, res) => {
       vehicleModel,
       chassisNumber,
       engineNumber,
-      proofIdentity,
-      proofResidence
+      proofIdentity: proofIdentityId,
+      proofResidence: proofResidenceId
     });
     await app.save();
     user.applications.push(app._id);

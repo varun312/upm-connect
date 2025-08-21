@@ -6,8 +6,8 @@ const businessApplicationSchema = new mongoose.Schema({
   businessType: { type: String, required: true },
   registrationNumber: { type: String, required: true },
   gstNumber: { type: String },
-  proofIdentity: { type: String, required: true },
-  proofResidence: { type: String, required: true },
+  proofIdentity: { type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true },
+  proofResidence: { type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true },
   status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
   createdAt: { type: Date, default: Date.now }
 });

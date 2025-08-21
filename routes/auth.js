@@ -60,27 +60,46 @@ router.post(
       .slice(0, 10);
     const hashedPassword = await bcrypt.hash(plainPassword, 10); // Hash password
     try {
+      // Prepare vaultDocs array
+      const vaultDocs = [];
+      let proofResidenceObj = undefined;
+      let proofIdentityObj = undefined;
+      // Save proofResidence as Document if uploaded
+      if (req.files["proof-residence"] && req.files["proof-residence"][0]) {
+        const Document = require("../models/Document");
+        const doc = await Document.create({
+          pingId,
+          docType: proofResidenceType,
+          filePath: req.files["proof-residence"][0].filename,
+          source: "register"
+        });
+        vaultDocs.push(doc._id);
+        proofResidenceObj = { type: proofResidenceType, file: req.files["proof-residence"][0].filename };
+      }
+      // Save proofIdentity as Document if uploaded
+      if (req.files["proof-identity"] && req.files["proof-identity"][0]) {
+        const Document = require("../models/Document");
+        const doc = await Document.create({
+          pingId,
+          docType: proofIdentityType,
+          filePath: req.files["proof-identity"][0].filename,
+          source: "register"
+        });
+        vaultDocs.push(doc._id);
+        proofIdentityObj = { type: proofIdentityType, file: req.files["proof-identity"][0].filename };
+      }
       const user = await new User({
         firstName: encryptField(firstName),
         lastName: encryptField(lastName),
         dob,
         gender,
         adres: encryptField(adres),
-  issuedate: new Date(),
-        proofResidence: {
-          type: proofResidenceType,
-          file: req.files["proof-residence"]
-            ? req.files["proof-residence"][0].filename
-            : undefined,
-        },
-        proofIdentity: {
-          type: proofIdentityType,
-          file: req.files["proof-identity"]
-            ? req.files["proof-identity"][0].filename
-            : undefined,
-        },
+        issuedate: new Date(),
+        proofResidence: proofResidenceObj,
+        proofIdentity: proofIdentityObj,
         pingId: pingId,
         password: hashedPassword,
+        vaultDocs: vaultDocs
       });
       await user.save();
       if (!user) {
