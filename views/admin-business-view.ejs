@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Applications - UPM</title>
+    <link rel="stylesheet" href="/css/globals.css" />
+    <link rel="stylesheet" href="/css/spending.css" />
+  </head>
+  <body>
+    <div class="container">
+      <%- include('partials/header') %>
+      <main class="main-content">
+        <div class="page-header">
+          <h1 class="page-title">Business <span>Applications</span></h1>
+        </div>
+        <div class="table-section">
+          <h2 class="table-title">BUSINESS APPLICATIONS</h2>
+          <div class="table-container" style="overflow-x:auto;">
+            <table class="spending-table" style="min-width:1100px;">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Business Name</th>
+                  <th>Business Type</th>
+                  <th>Registration Number</th>
+                  <th>GST Number</th>
+                  <th>Proof of Residence</th>
+                  <th>Proof of Identity</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (businessApplications && businessApplications.length > 0) { %>
+                  <% businessApplications.forEach(function(app) { %>
+                    <tr>
+                      <td><%= app.user && app.user.pingId ? app.user.pingId : 'N/A' %></td>
+                      <td><%= app.businessName %></td>
+                      <td><%= app.businessType %></td>
+                      <td><%= app.registrationNumber %></td>
+                      <td><%= app.gstNumber || 'N/A' %></td>
+                      <td>
+                        <% if (app.proofResidence && app.proofResidence.filePath) { %>
+                          <a href="/uploads/<%= app.proofResidence.filePath %>" target="_blank">View</a>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td>
+                        <% if (app.proofIdentity && app.proofIdentity.filePath) { %>
+                          <a href="/uploads/<%= app.proofIdentity.filePath %>" target="_blank">View</a>
+                        <% } else { %>
+                          N/A
+                        <% } %>
+                      </td>
+                      <td><%= app.status %></td>
+                      <td><%= app.createdAt ? app.createdAt.toLocaleString() : 'N/A' %></td>
+                      <td style="white-space:nowrap; max-width:120px; text-align:center;">
+                        <% if (app.status === 'pending') { %>
+                          <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                            <form action="/admin/business-applications/<%= app._id %>/approve" method="POST" style="margin:0;">
+                              <button type="submit" style="padding:4px 10px; background:#4CAF50; color:#fff; border:none; border-radius:3px; cursor:pointer; min-width:80px;">Approve</button>
+                            </form>
+                            <form action="/admin/business-applications/<%= app._id %>/reject" method="POST" style="margin:0;">
+                              <button type="submit" style="padding:4px 10px; background:#F44336; color:#fff; border:none; border-radius:3px; cursor:pointer; min-width:80px;">Reject</button>
+                            </form>
+                          </div>
+                        <% } else { %>
+                          <span style="color:#888;">-</span>
+                        <% } %>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="10" style="text-align:center; color:#888;">No business applications found.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

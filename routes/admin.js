@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const Meeting = require("../models/Meeting");
@@ -141,5 +142,68 @@ router.get("/admin/documents", auth, adminOnly, async (req, res) => {
     res.status(500).send("Error loading documents");
   }
 });
+
+
+
+// GET /admin/business-applications - show business applications table
+const BusinessApplication = require('../models/BusinessApplication');
+router.get('/admin/business-applications', auth, adminOnly, async (req, res) => {
+  try {
+    const businessApplications = await BusinessApplication.find()
+      .populate('user')
+      .populate('proofIdentity')
+      .populate('proofResidence')
+      .sort({ createdAt: -1 });
+    const user = await User.findById(req.user.userId);
+    res.render('admin-business-view', {
+      businessApplications,
+      user: user || null
+    });
+  } catch (err) {
+    res.status(500).send('Error loading business applications');
+  }
+});
+
+
+// GET /admin/vehicle-registrations - show vehicle registrations table
+const VehicleRegistration = require('../models/VehicleRegistration');
+router.get('/admin/vehicle-registrations', auth, adminOnly, async (req, res) => {
+  try {
+    const vehicleRegistrations = await VehicleRegistration.find()
+      .populate('user')
+      .populate('proofIdentity')
+      .populate('proofResidence')
+      .sort({ createdAt: -1 });
+    const user = await User.findById(req.user.userId);
+    res.render('vehicle-registration-view', {
+      vehicleRegistrations,
+      user: user || null
+    });
+  } catch (err) {
+    res.status(500).send('Error loading vehicle registrations');
+  }
+});
+
+
+
+// GET /admin/loan-applications - show loan applications table
+const LoanApplication = require('../models/LoanApplication');
+router.get('/admin/loan-applications', auth, adminOnly, async (req, res) => {
+  try {
+    const loanApplications = await LoanApplication.find()
+      .populate('user')
+      .populate('proofIdentity')
+      .populate('proofResidence')
+      .sort({ createdAt: -1 });
+    const user = await User.findById(req.user.userId);
+    res.render('loan-application-view', {
+      loanApplications,
+      user: user || null
+    });
+  } catch (err) {
+    res.status(500).send('Error loading loan applications');
+  }
+});
+
 
 module.exports = router;
