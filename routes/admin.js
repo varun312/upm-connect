@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const Meeting = require("../models/Meeting");
@@ -13,6 +12,96 @@ function adminOnly(req, res, next) {
   if (req.user && req.user.approvalLevel === 4) return next();
   return res.status(403).send("Forbidden: Admins only");
 }
+
+// Approve a business application
+router.post(
+  "/admin/business-applications/:id/approve",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await BusinessApplication.findByIdAndUpdate(req.params.id, { status: "approved" });
+      res.redirect("/admin/business-applications");
+    } catch (err) {
+      res.status(500).send("Error approving business application");
+    }
+  }
+);
+
+// Reject a business application
+router.post(
+  "/admin/business-applications/:id/reject",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await BusinessApplication.findByIdAndUpdate(req.params.id, { status: "rejected" });
+      res.redirect("/admin/business-applications");
+    } catch (err) {
+      res.status(500).send("Error rejecting business application");
+    }
+  }
+);
+
+// Approve a loan application
+router.post(
+  "/admin/loan-applications/:id/approve",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await LoanApplication.findByIdAndUpdate(req.params.id, { status: "approved" });
+      res.redirect("/admin/loan-applications");
+    } catch (err) {
+      res.status(500).send("Error approving loan application");
+    }
+  }
+);
+
+// Reject a loan application
+router.post(
+  "/admin/loan-applications/:id/reject",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await LoanApplication.findByIdAndUpdate(req.params.id, { status: "rejected" });
+      res.redirect("/admin/loan-applications");
+    } catch (err) {
+      res.status(500).send("Error rejecting loan application");
+    }
+  }
+);
+
+// Approve a vehicle registration
+router.post(
+  "/admin/vehicle-registrations/:id/approve",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await VehicleRegistration.findByIdAndUpdate(req.params.id, { status: "approved" });
+      res.redirect("/admin/vehicle-registrations");
+    } catch (err) {
+      res.status(500).send("Error approving vehicle registration");
+    }
+  }
+);
+
+// Reject a vehicle registration
+router.post(
+  "/admin/vehicle-registrations/:id/reject",
+  auth,
+  adminOnly,
+  async (req, res) => {
+    try {
+      await VehicleRegistration.findByIdAndUpdate(req.params.id, { status: "rejected" });
+      res.redirect("/admin/vehicle-registrations");
+    } catch (err) {
+      res.status(500).send("Error rejecting vehicle registration");
+    }
+  }
+);
 
 // Approve an application
 router.post(
