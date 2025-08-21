@@ -12,9 +12,15 @@
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-title">Admin Panel</div>
-  <a href="/admin/business-applications" class="dashboard-link">Manage Business Applications</a>
-  <a href="/admin/loan-applications" class="dashboard-link">Manage Loan Applications</a>
-  <a href="/admin/vehicle-registrations" class="dashboard-link">Manage Vehicle Registrations</a>
+        <a href="/admin/business-applications" class="dashboard-link"
+          >Manage Business Applications</a
+        >
+        <a href="/admin/loan-applications" class="dashboard-link"
+          >Manage Loan Applications</a
+        >
+        <a href="/admin/vehicle-registrations" class="dashboard-link"
+          >Manage Vehicle Registrations</a
+        >
         <a href="/admin/documents" class="dashboard-link">Manage Documents</a>
         <a href="/admin/meetings" class="dashboard-link">Manage Meetings</a>
         <a href="/admin/spendings" class="dashboard-link">Manage Spendings</a>
@@ -40,8 +46,6 @@
                     <th>Gender</th>
                     <th>Address</th>
                     <th>Issue Date</th>
-                    <th>Proof of Residence</th>
-                    <th>Proof of Identity</th>
                     <th>Approve</th>
                   </tr>
                 </thead>
@@ -56,26 +60,11 @@
                     <td><%= user.issuedate.toISOString().slice(0,10) %></td>
                     <td>
                       <a
-                        href="/uploads/<%= user.proofResidence.file %>"
-                        target="_blank"
-                        >View</a
-                      >
-                    </td>
-                    <td>
-                      <a
-                        href="/uploads/<%= user.proofIdentity.file %>"
-                        target="_blank"
-                        >View</a
-                      >
-                    </td>
-                    <td>
-                      <button
-                        id="approve-btn-<%= user._id %>"
-                        onclick="approveUser('<%= user._id %>')"
+                        href="/admin/compare/<%= user.pingId %>"
                         class="approve-btn"
                       >
-                        Approve
-                      </button>
+                        Compare
+                      </a>
                     </td>
                   </tr>
                   <% }) %> <% } else { %>
@@ -91,7 +80,6 @@
           </div>
 
           <!-- Vault -->
-           
         </main>
       </div>
     </div>

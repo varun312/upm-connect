@@ -7,8 +7,8 @@ const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
 const fs = require("fs"); // Add fs module
-const { encryptField, decryptField } = require("./../cryptoHelper");
-
+const { encryptField, decryptField } = require("./../cryptohelper");
+const { getVoterByImageID } = require("../utils/get-voterid");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Ensure uploads directory exists
@@ -46,13 +46,13 @@ router.post(
       dob,
       gender,
       adres,
-  // Remove issuedate from user input, use current date instead
+      // Remove issuedate from user input, use current date instead
       "proof-residence-type": proofResidenceType,
       "proof-identity-type": proofIdentityType,
     } = req.body;
-      const pingId = Math.floor(
-    100000000000 + Math.random() * 900000000000
-  ).toString();
+    const pingId = Math.floor(
+      100000000000 + Math.random() * 900000000000
+    ).toString();
     const plainPassword = crypto
       .randomBytes(8)
       .toString("base64")
@@ -64,30 +64,84 @@ router.post(
       const vaultDocs = [];
       let proofResidenceObj = undefined;
       let proofIdentityObj = undefined;
+      let extractedVoterId = null;
+
       // Save proofResidence as Document if uploaded
       if (req.files["proof-residence"] && req.files["proof-residence"][0]) {
+        // Check if this is a voter card and extract voter ID
+        if (proofResidenceType === "voter-card") {
+          try {
+            const voterResult = await getVoterByImageID(
+              req.files["proof-residence"][0]
+            );
+            if (voterResult.success) {
+              extractedVoterId = voterResult.idCleaned;
+              console.log("Extracted Voter ID:", extractedVoterId);
+            } else {
+              return res
+                .status(400)
+                .send(`Voter ID extraction failed: ${voterResult.error}`);
+            }
+          } catch (error) {
+            console.error("Error extracting voter ID:", error);
+            return res.status(400).send("Error processing voter card");
+          }
+        }
+
         const Document = require("../models/Document");
         const doc = await Document.create({
           pingId,
           docType: proofResidenceType,
           filePath: req.files["proof-residence"][0].filename,
-          source: "service-center"
+          documentTypeId:
+            proofResidenceType === "voter-card" ? extractedVoterId : pingId, // Store voter ID if voter-card, else use pingId
+          source: "service-center",
         });
         vaultDocs.push(doc._id);
-        proofResidenceObj = { type: proofResidenceType, file: req.files["proof-residence"][0].filename };
+        proofResidenceObj = {
+          type: proofResidenceType,
+          file: req.files["proof-residence"][0].filename,
+        };
       }
+
       // Save proofIdentity as Document if uploaded
       if (req.files["proof-identity"] && req.files["proof-identity"][0]) {
+        // Check if this is a voter card and extract voter ID
+        if (proofIdentityType === "voter-card") {
+          try {
+            const voterResult = await getVoterByImageID(
+              req.files["proof-identity"][0]
+            );
+            if (voterResult.success) {
+              extractedVoterId = voterResult.idCleaned;
+              console.log("Extracted Voter ID:", extractedVoterId);
+            } else {
+              return res
+                .status(400)
+                .send(`Voter ID extraction failed: ${voterResult.error}`);
+            }
+          } catch (error) {
+            console.error("Error extracting voter ID:", error);
+            return res.status(400).send("Error processing voter card");
+          }
+        }
+
         const Document = require("../models/Document");
         const doc = await Document.create({
           pingId,
           docType: proofIdentityType,
           filePath: req.files["proof-identity"][0].filename,
-          source: "service-center"
+          documentTypeId:
+            proofIdentityType === "voter-card" ? extractedVoterId : pingId, // Store voter ID if voter-card, else use pingId
+          source: "service-center",
         });
         vaultDocs.push(doc._id);
-        proofIdentityObj = { type: proofIdentityType, file: req.files["proof-identity"][0].filename };
+        proofIdentityObj = {
+          type: proofIdentityType,
+          file: req.files["proof-identity"][0].filename,
+        };
       }
+
       const user = await new User({
         firstName: encryptField(firstName),
         lastName: encryptField(lastName),
@@ -99,13 +153,15 @@ router.post(
         proofIdentity: proofIdentityObj,
         pingId: pingId,
         password: hashedPassword,
-        vaultDocs: vaultDocs
+        vaultDocs: vaultDocs,
       });
       await user.save();
       if (!user) {
         return res.send("User creation failed");
       }
-      res.send("pingId: "+ user.toJSON()["pingId"] + "<br>password: " + plainPassword);
+      res.send(
+        "pingId: " + user.toJSON()["pingId"] + "<br>password: " + plainPassword
+      );
     } catch (err) {
       console.error("Registration error:", err);
       if (err.code === 11000) {
@@ -127,11 +183,12 @@ router.post("/login", async (req, res) => {
   } = req.body;
 
   // Find user by pingId
-  const user = await User.findOne({ pingId }).populate(
-    "vaultDocs"
-  );
+  const user = await User.findOne({ pingId }).populate("vaultDocs");
 
-  if (firstName !== decryptField(user.firstName) || lastName !== decryptField(user.lastName)) {
+  if (
+    firstName !== decryptField(user.firstName) ||
+    lastName !== decryptField(user.lastName)
+  ) {
     // Name mismatch
     return res.status(400).send("User not found");
   }

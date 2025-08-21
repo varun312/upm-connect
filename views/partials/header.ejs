@@ -6,23 +6,34 @@
     </div>
   </div>
   <nav class="nav" id="nav">
-    <% if (user && user.approvalLevel === 4) { %>
-    <a href="/admin" class="nav-link" style="background: #a7abaf; color: #fff"
-      >Go Back</a
-    >
+    <% if (!user) { %>
+    <!-- Not logged in - show only Home -->
+    <a href="/" class="nav-link">Home</a>
+    <% } else if (user && user.approvalLevel === 4) { %>
+    <!-- Admin user -->
+    <a href="/" class="nav-link">Home</a>
+    <a href="/admin" class="nav-link" style="background: #a7abaf; color: #fff">Admin Panel</a>
     <% } else { %>
+    <!-- Regular logged-in user -->
+    <a href="/" class="nav-link">Home</a>
     <a href="/dashboard" class="nav-link">Dashboard</a>
+    <a href="/vault" class="nav-link">Vault</a>
     <a href="/meeting-minutes" class="nav-link">Meetings</a>
     <a href="/spendings" class="nav-link">Spendings</a>
-    <a href="/vault" class="nav-link">Vault</a>
+    <a href="/townhall" class="nav-link">Townhall</a>
     <a href="/application-form" class="nav-link">New Application</a>
     <% } %>
   </nav>
   <div class="header-right">
     <% if (user) { %>
+      <!-- User is logged in - show user icon and notifications -->
       <img src="/assets/user-icon.svg" alt="UserIcon" id="userIcon" style="cursor:pointer;" />
+      <img src="/assets/bell-icon.svg" alt="NotificationIcon" id="bellIcon" style="cursor:pointer;" />
+    <% } else { %>
+      <!-- User not logged in - show login/register links -->
+      <a href="/login" class="auth-link">Login</a>
+      <a href="/register" class="auth-link">Register</a>
     <% } %>
-    <img src="/assets/bell-icon.svg" alt="NotificationIcon" id="bellIcon" style="cursor:pointer;" />
 
     <% if (user) { %>
     <!-- User Popup Dialog -->
@@ -81,6 +92,21 @@
   .popup-link:hover {
     text-decoration: underline;
   }
+  .auth-link {
+    color: #2d1810;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 8px;
+    padding: 8px 16px;
+    border: 2px solid #2d1810;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .auth-link:hover {
+    background: #2d1810;
+    color: #f7e8d9;
+  }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -91,6 +117,8 @@
     document.getElementById(id).style.display = 'none';
     document.removeEventListener('mousedown', window[id + 'ClickHandler']);
   }
+  
+  // Only add user icon event listener if user is logged in
   if (document.getElementById('userIcon')) {
     document.getElementById('userIcon').onclick = function(e) {
       e.stopPropagation();
@@ -105,17 +133,21 @@
       document.addEventListener('mousedown', window.userDialogClickHandler);
     };
   }
-  document.getElementById('bellIcon').onclick = function(e) {
-    e.stopPropagation();
-    let dialog = document.getElementById('bellDialog');
-    dialog.style.display = 'block';
-    window.bellDialogClickHandler = function(event) {
-      if (!dialog.contains(event.target) && event.target.id !== 'bellIcon') {
-        dialog.style.display = 'none';
-        document.removeEventListener('mousedown', window.bellDialogClickHandler);
-      }
+  
+  // Only add bell icon event listener if user is logged in
+  if (document.getElementById('bellIcon')) {
+    document.getElementById('bellIcon').onclick = function(e) {
+      e.stopPropagation();
+      let dialog = document.getElementById('bellDialog');
+      dialog.style.display = 'block';
+      window.bellDialogClickHandler = function(event) {
+        if (!dialog.contains(event.target) && event.target.id !== 'bellIcon') {
+          dialog.style.display = 'none';
+          document.removeEventListener('mousedown', window.bellDialogClickHandler);
+        }
+      };
+      document.addEventListener('mousedown', window.bellDialogClickHandler);
     };
-    document.addEventListener('mousedown', window.bellDialogClickHandler);
-  };
+  }
 </script>
 </header>

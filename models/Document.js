@@ -1,12 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const documentSchema = new mongoose.Schema({
   pingId: { type: String, required: true },
   docType: { type: String },
+  documentTypeId: { type: String, required: false },
   filePath: { type: String, required: true },
-  source: { type: String, enum: ['service-center', 'scanner', 'mail-in'] },
+  source: { type: String, enum: ["service-center", "scanner", "mail-in"] },
   createdAt: { type: Date, default: Date.now },
-  status: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
+  status: {
+    type: String,
+    enum: ["pending", "verified", "rejected"],
+    default: "pending",
+  },
 });
 
-module.exports = mongoose.model('Document', documentSchema);
+module.exports = mongoose.model("Document", documentSchema);

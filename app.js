@@ -8,10 +8,9 @@ const getUser = require("./middleware/getUser");
 const path = require("path");
 const User = require("./models/User"); // Add this at the top with other requires
 
-
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -76,9 +75,13 @@ app.get("/dashboard", auth, async (req, res) => {
       return res.redirect("/login");
     }
     // Fetch all business, loan, and vehicle applications for this user
-    const businessApplications = await BusinessApplication.find({ user: userId });
+    const businessApplications = await BusinessApplication.find({
+      user: userId,
+    });
     const loanApplications = await LoanApplication.find({ user: userId });
-    const vehicleRegistrations = await VehicleRegistration.find({ user: userId });
+    const vehicleRegistrations = await VehicleRegistration.find({
+      user: userId,
+    });
     user.firstName = req.user.firstName;
     user.lastName = req.user.lastName;
     res.render("dashboard", {
@@ -88,7 +91,7 @@ app.get("/dashboard", auth, async (req, res) => {
       applications: user.applications || [],
       businessApplications,
       loanApplications,
-      vehicleRegistrations
+      vehicleRegistrations,
     });
   } catch (err) {
     console.log(err);
@@ -101,7 +104,7 @@ app.get("/approval", auth, (req, res) => {
     req.user && typeof req.user.approvalLevel === "number"
       ? req.user.approvalLevel
       : 0;
-  res.json({ approvalLevel, user: req.user || null });
+  res.render("approval", { approvalLevel, user: req.user || null });
 });
 
 const meetingsRoutes = require("./routes/meetings");
@@ -113,6 +116,8 @@ const adminApprovalRoutes = require("./routes/admin-approval");
 const raiseInMeetingRoutes = require("./routes/raise-in-meeting");
 const wowUpRoutes = require("./routes/wowUp");
 const townhallRoutes = require("./routes/townhall");
+const govtRoutes = require("./routes/govt");
+
 app.use("/", authRoutes);
 app.use("/", meetingsRoutes);
 app.use("/", adminRoutes);
@@ -123,13 +128,13 @@ app.use("/", applicationRoutes);
 app.use("/wowUp", wowUpRoutes);
 app.use("/raise-in-meeting", raiseInMeetingRoutes);
 app.use("/townhall", townhallRoutes);
-
+app.use("/govtdb", govtRoutes);
 
 // --- Socket.IO for townhall chat ---
-const Message = require('./models/Message');
-io.on('connection', (socket) => {
+const Message = require("./models/Message");
+io.on("connection", (socket) => {
   // No authentication here; rely on POST for persistence
-  socket.on('chat message', async (text) => {
+  socket.on("chat message", async (text) => {
     // No user context on socket, so skip persistence here
     // Real persistence is handled in POST /townhall/message
     // This is just for real-time broadcast
@@ -138,7 +143,7 @@ io.on('connection', (socket) => {
 });
 
 // Expose io to routes
-app.set('io', io);
+app.set("io", io);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => console.log(`Server running on port ${PORT}`));
