@@ -151,23 +151,51 @@ router.get("/admin/compare/:id", auth, adminOnly, async (req, res) => {
 
     // Fetch all documents matching the pingId
     const documents = await Document.find({ pingId: pingId });
+    console.log(`Found ${documents.length} documents for pingId: ${pingId}`);
+    console.log(
+      "Documents:",
+      documents.map((doc) => ({ docType: doc.docType, filePath: doc.filePath }))
+    );
+
+    // Filter for voter-card documents
     const filteredDocuments = documents.filter(
       (doc) => doc.docType === "voter-card"
     );
+    console.log(`Found ${filteredDocuments.length} voter-card documents`);
 
+    // Get government documents
     const govtDocuments = await VoterCardInfo.find({
       voterId: filteredDocuments.map((doc) => doc.documentTypeId),
     });
-    console.log(`Found ${documents.length} documents for pingId: ${pingId}`);
+    console.log(`Found ${govtDocuments.length} government documents`);
+
+    // Determine which image to show - prefer voter-card, fallback to any document
+    let userImagePath = null;
+    let documentId = null;
+
+    if (filteredDocuments.length > 0) {
+      userImagePath = filteredDocuments[0].filePath;
+      documentId = filteredDocuments[0]._id;
+    } else if (documents.length > 0) {
+      // Fallback to any document if no voter-card found
+      userImagePath = documents[0].filePath;
+      documentId = documents[0]._id;
+    }
+
+    console.log("User image path:", userImagePath);
+    console.log(
+      "Government image:",
+      govtDocuments.length > 0 ? govtDocuments[0].voterIdImage : "None"
+    );
 
     res.render("compare", {
       user: user || null,
       documents: documents,
       govtDocuments: govtDocuments,
-      userImage: documents.length > 0 ? documents[0].filePath : null,
+      userImage: userImagePath,
       govtImage:
         govtDocuments.length > 0 ? govtDocuments[0].voterIdImage : null,
-      documentId: documents.length > 0 ? documents[0]._id : null,
+      documentId: documentId,
     });
   } catch (error) {
     console.error("Error fetching documents:", error);

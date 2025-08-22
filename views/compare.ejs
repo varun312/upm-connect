@@ -252,7 +252,11 @@
         </div>
         <div class="image-container">
           <% if (userImage) { %>
-          <img src="/uploads/<%= userImage %>" alt="User Submitted Document" />
+          <img
+            src="/uploads/<%= userImage %>"
+            alt="User Submitted Document"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=&quot;no-image&quot;>Image File Not Found<br/>Check File Path</div>';"
+          />
           <% } else { %>
           <div class="no-image">
             No Document Submitted<br />
@@ -311,6 +315,10 @@
     </div>
 
     <script>
+      // Debug image loading
+      console.log("User image path: <%= userImage || 'null' %>");
+      console.log("Government image path: <%= govtImage || 'null' %>");
+
       function handleApproval(isApproved) {
         const action = isApproved ? "approve" : "reject";
         const button = event.target;
@@ -360,6 +368,22 @@
           handleApproval(true);
         } else if (event.key === "r" || event.key === "R") {
           handleApproval(false);
+        }
+      });
+
+      // Test image accessibility on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        const userImage = '<%= userImage || "" %>';
+        if (userImage) {
+          const testImg = new Image();
+          testImg.onload = function () {
+            console.log("✓ User image loaded successfully:", userImage);
+          };
+          testImg.onerror = function () {
+            console.error("✗ User image failed to load:", userImage);
+            console.log("Full URL:", `/uploads/${userImage}`);
+          };
+          testImg.src = `/uploads/${userImage}`;
         }
       });
     </script>
